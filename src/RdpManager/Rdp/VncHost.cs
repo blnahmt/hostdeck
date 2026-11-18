@@ -3,7 +3,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Runtime.InteropServices;
 using MarcusW.VncClient;
+using MarcusW.VncClient.Output;
+using MarcusW.VncClient.Protocol.Implementation;
+using MarcusW.VncClient.Protocol.Implementation.EncodingTypes.Pseudo;
 using MarcusW.VncClient.Protocol.Implementation.MessageTypes.Outgoing;
 using MarcusW.VncClient.Protocol.Implementation.Services.Transports;
 using MarcusW.VncClient.Protocol.SecurityTypes;
@@ -31,6 +35,9 @@ public sealed class VncHost : UserControl, ISessionHost
 {
     private const int MaxReconnectAttempts = 5;
 
+    // shortcut: buyuk panolar (or. dev log) oturumu tikamasin diye gonderilmiyor; gerekirse sinir buyutulur.
+    private const int MaxClipboardChars = 1_000_000;
+
     private readonly Image _image = new() { Stretch = Stretch.Uniform };
     private readonly Border _overlay;
     private readonly TextBlock _overlayText;
@@ -46,6 +53,9 @@ public sealed class VncHost : UserControl, ISessionHost
     private RdpSessionStatus _status = RdpSessionStatus.NotInitialized;
     private MouseButtons _buttons;
     private bool _disposed;
+
+    /// <summary>Son gonderilen/alinan pano metni: ayni metin iki taraf arasinda gidip gelmesin.</summary>
+    private string? _lastClipboard;
 
     public VncHost()
     {
@@ -90,6 +100,8 @@ public sealed class VncHost : UserControl, ISessionHost
             if (_rfb is null && _connectCts is null && !_disposed) _ = ConnectAsync();
         };
         LostKeyboardFocus += (_, _) => ReleaseAllKeys();
+        // Yerel pano baska uygulamada degisir; oturuma donuldugunde sunucuya gonderilir.
+        GotKeyboardFocus += (_, _) => SendLocalClipboard();
     }
 
     public RdpConnection Connection => _connection;
@@ -128,6 +140,7 @@ public sealed class VncHost : UserControl, ISessionHost
                 TransportParameters = new TcpTransportParameters { Host = _connection.Address.Trim(), Port = _connection.Port },
                 AuthenticationHandler = new SavedPasswordHandler(_connection.UserName, _connection.Password),
                 InitialRenderTarget = _framebuffer,
+                InitialOutputHandler = new ServerOutput(this),
                 AllowSharedConnection = true,
                 MaxReconnectAttempts = _connection.EnableAutoReconnect ? MaxReconnectAttempts : 0,
             }, cts.Token);
@@ -179,6 +192,7 @@ public sealed class VncHost : UserControl, ISessionHost
                 Status = RdpSessionStatus.Connected;
                 _overlay.Visibility = Visibility.Collapsed;
                 Focus();
+                SendLocalClipboard(); // zaten odaktaysa GotKeyboardFocus gelmez
                 Connected?.Invoke(this, EventArgs.Empty);
                 break;
 
@@ -241,6 +255,57 @@ public sealed class VncHost : UserControl, ISessionHost
         _overlayText.Text = text;
         _reconnectButton.Visibility = showReconnect ? Visibility.Visible : Visibility.Collapsed;
         _overlay.Visibility = Visibility.Visible;
+    }
+
+    // ----------------------------------------------------------------- pano
+
+    private void SendLocalClipboard()
+    {
+        if (_rfb is null || !_connection.RedirectClipboard) return;
+
+        string text;
+        try
+        {
+            if (!System.Windows.Clipboard.ContainsText()) return;
+            text = System.Windows.Clipboard.GetText();
+        }
+        catch (COMException)
+        {
+            return; // pano baska bir uygulamada acik
+        }
+
+        if (text.Length == 0 || text.Length > MaxClipboardChars || text == _lastClipboard) return;
+        _lastClipboard = text;
+        // RFB metni LF ile tasir.
+        _rfb.SendClipboardText(text.Replace("\r\n", "\n"), default);
+    }
+
+    private void ReceiveServerClipboard(string? text)
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        Dispatcher.BeginInvoke(() =>
+        {
+            if (_disposed || !_connection.RedirectClipboard) return;
+            text = text.TrimEnd('\0').Replace("\r\n", "\n").Replace("\n", "\r\n");
+            if (text.Length == 0 || text == _lastClipboard) return;
+            _lastClipboard = text;
+            try { System.Windows.Clipboard.SetDataObject(text, copy: true); }
+            catch (COMException ex) { Log.Debug(ex, "[{Conn}] VNC panosu yerel panoya yazilamadi", _connection.DisplayName); }
+        });
+    }
+
+    /// <summary>Sunucudan gelen olaylar (kutuphanenin alim thread'inde cagrilir).</summary>
+    private sealed class ServerOutput(VncHost host) : IOutputHandler
+    {
+        public void HandleServerClipboardUpdate(string text) => host.ReceiveServerClipboard(text);
+        public void HandleExtendedClipboardData(ExtendedClipboardData data) => host.ReceiveServerClipboard(data.Text);
+        public void HandleExtendedClipboardNotify(ExtendedClipboardFormat formats) { }
+        public void HandleExtendedClipboardRequest(ExtendedClipboardFormat formats) { }
+        public void RingBell() { }
+        public void HandleDesktopNameChange(string name) { }
+        public void HandleXvpOperationFailed() { }
+        public void HandlePointerModeChange(bool relative) { }
+        public void HandleLedStateChange(LedState state) { }
     }
 
     // ---------------------------------------------------------------- girdi

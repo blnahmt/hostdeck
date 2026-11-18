@@ -305,7 +305,7 @@
                 <TextBlock Grid.Row="14" Grid.ColumnSpan="2" Text="{loc:T 'YONLENDIRMELER'}" Style="{StaticResource Text.SectionHeader}" />
 
                 <StackPanel Grid.Row="15" Grid.Column="1">
-                    <CheckBox Content="{loc:T 'Pano'}" IsChecked="{Binding Draft.RedirectClipboard}" />
+                    <CheckBox x:Name="ClipboardCheck" Content="{loc:T 'Pano'}" IsChecked="{Binding Draft.RedirectClipboard}" />
                     <CheckBox Content="{loc:T 'Yerel surucular'}" IsChecked="{Binding Draft.RedirectDrives}" />
                     <CheckBox Content="{loc:T 'Yazicilar'}" IsChecked="{Binding Draft.RedirectPrinters}" />
                     <CheckBox Content="{loc:T 'COM portlari'}" IsChecked="{Binding Draft.RedirectPorts}" />

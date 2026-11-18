@@ -32,7 +32,7 @@ public partial class ConnectionEditorDialog : ChromeWindow
         UpdateProtocolFields();
     }
 
-    // FieldsGrid satirlari: 8 Domain, 9 Parola, 10-16 Goruntu + Yonlendirmeler,
+    // FieldsGrid satirlari: 8 Domain, 9 Parola, 10-13 Goruntu, 14-16 Yonlendirmeler (+ses),
     // 17-18 Guvenlik, 19 secenekler, 20-21 RD Gateway. Satir eklenirse burasi da guncellenmeli.
     private static readonly HashSet<int> RdpOnlyRows = [8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21];
 
@@ -48,6 +48,7 @@ public partial class ConnectionEditorDialog : ChromeWindow
             var visible = row switch
             {
                 9 => !draft.IsSsh,   // ssh.exe parolayi disaridan almiyor
+                14 or 15 => !draft.IsSsh, // VNC'de yalniz pano secenegi gosterilir
                 19 => !draft.IsSsh,  // otomatik yeniden baglanma VNC'de de var
                 _ => rdp || !RdpOnlyRows.Contains(row),
             };
@@ -55,6 +56,8 @@ public partial class ConnectionEditorDialog : ChromeWindow
         }
 
         CredSspCheck.Visibility = WindowsKeysCheck.Visibility = rdp ? Visibility.Visible : Visibility.Collapsed;
+        foreach (UIElement option in ((System.Windows.Controls.Panel)ClipboardCheck.Parent).Children)
+            if (option != ClipboardCheck) option.Visibility = rdp ? Visibility.Visible : Visibility.Collapsed;
 
         PasswordHint.Text = _viewModel.HadPassword
             ? Loc.T("Kayitli parola var. Degistirmek icin yenisini yazin, dokunmazsaniz korunur.")
