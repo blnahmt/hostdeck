@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" Padding="24,18,20,0">
-            <Grid>
+            <Grid x:Name="FieldsGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="118" />
                     <ColumnDefinition Width="*" />
@@ -333,9 +333,9 @@
                 </ComboBox>
 
                 <StackPanel Grid.Row="19" Grid.Column="1" Margin="0,8,0,8">
-                    <CheckBox Content="CredSSP (Network Level Authentication)" IsChecked="{Binding Draft.EnableCredSsp}" />
+                    <CheckBox x:Name="CredSspCheck" Content="CredSSP (Network Level Authentication)" IsChecked="{Binding Draft.EnableCredSsp}" />
                     <CheckBox Content="{loc:T 'Koptugunda otomatik yeniden baglan'}" IsChecked="{Binding Draft.EnableAutoReconnect}" />
-                    <CheckBox Content="{loc:T 'Windows tuslarini uzak oturuma gonder'}"
+                    <CheckBox x:Name="WindowsKeysCheck" Content="{loc:T 'Windows tuslarini uzak oturuma gonder'}"
                               IsChecked="{Binding Draft.SendWindowsKeys}"
                               ToolTip="{loc:T 'Kapaliyken Windows tusu ve Win+Shift+S yerel bilgisayara etki eder (yalniz tam ekranda uzak oturuma gider).'}" />
                 </StackPanel>

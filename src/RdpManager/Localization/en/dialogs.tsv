@@ -118,3 +118,4 @@ Guncelleme hatasi	Update error
 Kontrol ediliyor...	Checking...
 VNC istemcisi:	VNC client:
 ve katkida bulunanlar.	and contributors.
+VNC sunucusu parola istiyorsa burada kaydedin; baglanirken sorulmaz.	If the VNC server requires a password, save it here; you will not be asked when connecting.
