@@ -1,0 +1,46 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        ACIK TEMA - beyaz agirlikli, ince kirmizi vurgu.
+        Renk anahtarlari Dark.xaml ile BIREBIR ayni olmali; tema degisimi
+        sozlugu komple degistirerek calisiyor.
+    -->
+
+    <!-- Yuzeyler -->
+    <SolidColorBrush x:Key="Brush.Background"    Color="#FFFFFF" />
+    <SolidColorBrush x:Key="Brush.Surface"       Color="#FAFAFA" />
+    <SolidColorBrush x:Key="Brush.SurfaceRaised" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="Brush.SurfaceSunken" Color="#F4F4F5" />
+
+    <!-- Cizgiler -->
+    <SolidColorBrush x:Key="Brush.Border"       Color="#E6E6E8" />
+    <SolidColorBrush x:Key="Brush.BorderStrong" Color="#D2D2D6" />
+
+    <!-- Metin -->
+    <SolidColorBrush x:Key="Brush.Text"          Color="#1A1A1C" />
+    <SolidColorBrush x:Key="Brush.TextSecondary" Color="#6E6E76" />
+    <SolidColorBrush x:Key="Brush.TextMuted"     Color="#9B9BA3" />
+    <SolidColorBrush x:Key="Brush.TextOnAccent"  Color="#FFFFFF" />
+
+    <!-- Kirmizi vurgu: yalniz secim, aktif sekme, birincil buton, odak halkasi -->
+    <SolidColorBrush x:Key="Brush.Accent"        Color="#D64545" />
+    <SolidColorBrush x:Key="Brush.AccentHover"   Color="#C13B3B" />
+    <SolidColorBrush x:Key="Brush.AccentPressed" Color="#A93333" />
+    <SolidColorBrush x:Key="Brush.AccentSubtle"  Color="#FBEDED" />
+
+    <!-- Etkilesim -->
+    <SolidColorBrush x:Key="Brush.Hover"    Color="#F0F0F2" />
+    <SolidColorBrush x:Key="Brush.Selected" Color="#FBEDED" />
+    <!-- Liste satirinda secim: kirmizi kenarlik yerine belirgin zemin -->
+    <SolidColorBrush x:Key="Brush.SelectedStrong" Color="#DFE4EA" />
+
+    <!-- Durum -->
+    <SolidColorBrush x:Key="Brush.Success" Color="#3F9D5B" />
+    <SolidColorBrush x:Key="Brush.Warning" Color="#C99A2E" />
+    <SolidColorBrush x:Key="Brush.Danger"  Color="#D64545" />
+
+    <!-- Oturum alani: uzak masaustu yuklenene kadarki bosluk -->
+    <SolidColorBrush x:Key="Brush.SessionBackdrop" Color="#2B2B2E" />
+
+</ResourceDictionary>

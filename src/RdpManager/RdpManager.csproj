@@ -1,0 +1,121 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>RdpManager</RootNamespace>
+    <AssemblyName>Hostline RD</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.0.5</Version>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
+    <Product>Hostline Remote Desktop</Product>
+    <Company>Hostline</Company>
+    <Description>Hostline Remote Desktop - RDP, VNC ve SSH baglanti yoneticisi</Description>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
+    <!-- mstscax.dll COM interop'u x64. AnyCPU ile calisirsa 32-bit hostta patlar. -->
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <!--
+      WFO0003: WinForms, DPI ayarinin manifest yerine Application.SetHighDpiMode ile
+      yapilmasini istiyor. Burada uygulama WPF; DPI'i WinForms degil manifest belirlemeli
+      ve RDP ActiveX'i dogru DesktopScaleFactor icin PerMonitorV2'ye ihtiyac duyuyor.
+
+      NU1903: SQLitePCLRaw.lib.e_sqlite3 2.1.11'deki GHSA-2m69-gcr7-jv3q. Yalniz kotu
+      niyetli SQL/DB islemede istismar edilir; uygulama SQLite'i sadece kendi yerel
+      ayar DB'si icin kullaniyor (dis girdi yok). 3.0.x native bagimliligi yuzunden
+      bazi makinelerde acilmiyordu, bu yuzden bilerek 2.1.11'de kaliyoruz.
+    -->
+    <NoWarn>$(NoWarn);WFO0003;NU1903</NoWarn>
+  </PropertyGroup>
+
+  <!--
+    Iki surum ayni koddan derlenir (-p:Edition=Public|Internal).
+    Public (Hostline RD) varsayilan ve depodaki tek surumdur. Internal surumun ad, ikon ve
+    adresleri git'e girmeyen Internal/ klasorunde durur; klasor varsa varsayilan Internal olur.
+  -->
+  <PropertyGroup>
+    <Edition Condition="'$(Edition)' == '' And Exists('$(MSBuildThisFileDirectory)Internal\Internal.props')">Internal</Edition>
+    <Edition Condition="'$(Edition)' == ''">Public</Edition>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Edition)' == 'Public'">
+    <DefineConstants>$(DefineConstants);PUBLIC_EDITION</DefineConstants>
+  </PropertyGroup>
+
+  <!--
+    Interop DLL'leri repoda binary olarak tutuluyor.
+    Yoksa once: pwsh tools/Generate-Interop.ps1
+  -->
+  <ItemGroup>
+    <Reference Include="AxMSTSCLib">
+      <HintPath>..\..\lib\AxMSTSCLib.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="MSTSCLib">
+      <HintPath>..\..\lib\MSTSCLib.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Community.MarcusW.VncClient" Version="2.0.8" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Dragablz" Version="0.0.3.234" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0" />
+    <!--
+      Microsoft.Data.Sqlite 10.0.0'in bekledigi surum. 3.0.x'e cikarmak bazi
+      kullanici makinelerinde native e_sqlite3 yuklenememesine (VC++ bagimliligi)
+      yol aciyordu; 2.1.11 statik derli oldugu icin her makinede sorunsuz calisir.
+      GHSA-2m69-gcr7-jv3q yalniz kotu niyetli SQL/DB islemede gecerli; bu uygulama
+      SQLite'i yalnizca kendi yerel ayar DB'si icin kullaniyor (dis girdi yok).
+    -->
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
+    <!-- DPAPI (ProtectedData) .NET 10 runtime'inda hazir geliyor, ayri paket gerekmiyor. -->
+    <PackageReference Include="Serilog" Version="4.2.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+  </ItemGroup>
+
+  <!-- Quicksand (SIL OFL) exe'ye gomuluyor; hedef makineye kurulum gerekmiyor. -->
+  <ItemGroup>
+    <Resource Include="Resources\app.ico" />
+    <Resource Include="Resources\Fonts\*.ttf" />
+    <None Include="Resources\Fonts\OFL.txt" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Twemoji renkli emoji gorselleri (CC-BY 4.0) ve gomulu emoji listesi -->
+    <None Remove="Resources\Emoji\**" />
+    <Resource Include="Resources\Emoji\*.png" />
+    <Resource Include="Resources\Emoji\emoji-list.txt" />
+    <!-- Ingilizce sozluk: Turkce<TAB>Ingilizce. Loc.LoadEnglish tum dosyalari birlestirir. -->
+    <EmbeddedResource Include="Localization\en\*.tsv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Branding\**" />
+  </ItemGroup>
+
+  <!-- Sirket ici surum: ozel ad/ikon (Resource kaldirma bu noktadan sonra calisir). -->
+  <Import Project="Internal\Internal.props" Condition="'$(Edition)' == 'Internal' And Exists('$(MSBuildThisFileDirectory)Internal\Internal.props')" />
+  <ItemGroup Condition="'$(Edition)' == 'Public'">
+    <Compile Remove="Internal\**" />
+    <None Remove="Internal\**" />
+  </ItemGroup>
+
+  <Target Name="CheckInternalFiles" BeforeTargets="BeforeBuild"
+          Condition="'$(Edition)' == 'Internal' And !Exists('$(MSBuildThisFileDirectory)Internal\Internal.props')">
+    <Error Text="Internal surum icin src\RdpManager\Internal klasoru gerekli (depoda yok). Dis surum icin -p:Edition=Public kullanin." />
+  </Target>
+
+  <Target Name="CheckInteropExists" BeforeTargets="BeforeBuild">
+    <Error Condition="!Exists('$(MSBuildThisFileDirectory)..\..\lib\AxMSTSCLib.dll')" Text="lib\AxMSTSCLib.dll bulunamadi. Once 'pwsh tools\Generate-Interop.ps1' calistirin." />
+  </Target>
+
+</Project>

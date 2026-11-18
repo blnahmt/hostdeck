@@ -1,0 +1,13 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+# lib/ ICINDEKI interop DLL'leri BILEREK commit ediliyor — ignore etmeyin.
+
+# Kurulum dosyalari ve latest.json: tools/Release.ps1 uretiyor, depoya girmez.
+release/
+
+# Sirket ici surum: ad, ikon, adresler. ASLA commit etmeyin (depo herkese acik olabilir).
+src/RdpManager/Internal/
+tools/internal.ps1

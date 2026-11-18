@@ -1,0 +1,16 @@
+<Window x:Class="RdpManager.Views.FullScreenWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:RdpManager.Localization"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Background="{DynamicResource Brush.SessionBackdrop}"
+        Title="{loc:T 'Tam ekran'}">
+    <!--
+        Bu pencerede SADECE oturum var. Arac cubugu ayri bir pencerede
+        (FullScreenBar) — cunku WPF ogeleri RDP kontrolunun (HWND) uzerine
+        cizilemez, ayni pencerede olsalardi gorunmezlerdi.
+    -->
+    <ContentControl x:Name="HostSlot" />
+</Window>

@@ -1,0 +1,197 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+                    xmlns:views="clr-namespace:RdpManager.Views"
+                    xmlns:loc="clr-namespace:RdpManager.Localization">
+
+    <!--
+        ChromeWindow'un varsayilan stili BURADA olmak zorunda.
+
+        Neden App.xaml'de degil: WPF'te implicit style (TargetType=...) yalnizca
+        TAM tipe uygulanir, turetilmis tiplere miras kalmaz. MainWindow gibi
+        ChromeWindow'dan turemis pencereler stili goremezdi. DefaultStyleKey ise
+        stili yalnizca tema sozlugunde (Themes/Generic.xaml) arar.
+
+        Bu sozluk App.xaml'in kaynaklarini goremez; bu yuzden disaridan gelen her
+        sey (Brush.*, Icon.*, Font.*) DynamicResource ile cozuluyor.
+    -->
+
+    <!-- Pencere dugmesi: kare, cizgi ikonlu, cerceve/golge yok -->
+    <Style x:Key="Chrome.Button" TargetType="Button">
+        <Setter Property="Width" Value="44" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.TextSecondary}" />
+        <!-- Olmazsa tiklamayi Windows caption alani yutar -->
+        <Setter Property="shell:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root" Background="{TemplateBinding Background}">
+                        <Path Data="{TemplateBinding Tag}"
+                              Stroke="{TemplateBinding Foreground}"
+                              StrokeThickness="1.2"
+                              StrokeStartLineCap="Round"
+                              StrokeEndLineCap="Round"
+                              StrokeLineJoin="Round"
+                              Stretch="Uniform"
+                              Width="10" Height="10"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Brush.Hover}" />
+                            <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Kapat: uzerine gelince kirmizi zemin, beyaz ikon -->
+    <Style x:Key="Chrome.CloseButton" TargetType="Button" BasedOn="{StaticResource Chrome.Button}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type views:ChromeWindow}">
+        <Setter Property="Background" Value="{DynamicResource Brush.Background}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type views:ChromeWindow}">
+                    <Border x:Name="WindowRoot"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{DynamicResource Brush.BorderStrong}"
+                            BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <ContentPresenter x:Name="ContentHost" Grid.Row="1" />
+
+                            <!--
+                                Ust serit. ShowTitleBar=False iken kendi zemini
+                                olmaz ve icerik bu seridin ALTINDAN gecer; boylece
+                                sekme seridi ile pencere dugmeleri TEK cubuk olur.
+                            -->
+                            <Border x:Name="TitleBar"
+                                    Grid.Row="0"
+                                    Panel.ZIndex="1"
+                                    Height="{TemplateBinding TitleBarHeight}"
+                                    Background="{DynamicResource Brush.Surface}"
+                                    BorderBrush="{DynamicResource Brush.Border}"
+                                    BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel x:Name="TitleArea"
+                                                Grid.Column="0"
+                                                Orientation="Horizontal"
+                                                Margin="12,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <Image Source="pack://application:,,,/Resources/app.ico"
+                                               Width="18" Height="18"
+                                               Margin="0,0,8,0"
+                                               VerticalAlignment="Center"
+                                               RenderOptions.BitmapScalingMode="HighQuality" />
+                                        <TextBlock x:Name="TitleText"
+                                                   Text="{TemplateBinding Title}"
+                                                   Foreground="{DynamicResource Brush.TextSecondary}"
+                                                   FontFamily="{DynamicResource Font.App}"
+                                                   FontSize="{DynamicResource Font.Size.Small}"
+                                                   FontWeight="Medium"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+
+                                    <ContentPresenter Grid.Column="1"
+                                                      Content="{TemplateBinding TitleBarContent}"
+                                                      VerticalAlignment="Center" />
+
+                                    <ContentPresenter Grid.Column="2"
+                                                      Content="{TemplateBinding TitleBarActions}"
+                                                      VerticalAlignment="Center" />
+
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                                        <Button x:Name="PART_Minimize"
+                                                Style="{StaticResource Chrome.Button}"
+                                                Tag="{DynamicResource Icon.Minimize}"
+                                                Height="{TemplateBinding TitleBarHeight}"
+                                                Command="{Binding MinimizeCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                                ToolTip="{loc:T 'Simge durumuna kucult'}" />
+                                        <Button x:Name="PART_Maximize"
+                                                Style="{StaticResource Chrome.Button}"
+                                                Tag="{DynamicResource Icon.Maximize}"
+                                                Height="{TemplateBinding TitleBarHeight}"
+                                                Command="{Binding MaximizeRestoreCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                                ToolTip="{loc:T 'Buyut'}" />
+                                        <Button x:Name="PART_Close"
+                                                Style="{StaticResource Chrome.CloseButton}"
+                                                Tag="{DynamicResource Icon.Close}"
+                                                Height="{TemplateBinding TitleBarHeight}"
+                                                Command="{Binding CloseWindowCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                                ToolTip="{loc:T 'Kapat'}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ShowTitleBar" Value="False">
+                            <!--
+                                Background = x:Null, "Transparent" DEGIL.
+                                WPF'te Transparent zemin TIKLANABILIRDIR: serit tum
+                                genisligi kapladigi icin altindaki sekme seridine
+                                giden tiklamalari yutuyordu (pencere dugmeleri onun
+                                cocugu oldugundan calisiyor, "+" ve sekmeler calismiyordu).
+                                x:Null ile serit fare olaylarina tamamen seffaf olur;
+                                bos alandaki surukleme zaten Windows caption'i uzerinden
+                                calismaya devam eder.
+                            -->
+                            <Setter TargetName="TitleBar" Property="Background" Value="{x:Null}" />
+                            <Setter TargetName="TitleBar" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="TitleArea" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="ContentHost" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="ContentHost" Property="Grid.RowSpan" Value="2" />
+                        </Trigger>
+
+                        <Trigger Property="WindowState" Value="Maximized">
+                            <!--
+                                Margin YOK: tasma WM_GETMINMAXINFO ile engelleniyor
+                                (bkz. ChromeInterop). Burada Margin vermek, icerigi
+                                kaydirip WindowsFormsHost'taki HWND'yi sekme seridinin
+                                altinda birakiyordu.
+                            -->
+                            <Setter TargetName="WindowRoot" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="PART_Maximize" Property="Tag" Value="{DynamicResource Icon.Restore}" />
+                            <Setter TargetName="PART_Maximize" Property="ToolTip" Value="{loc:T 'Onceki boyut'}" />
+                        </Trigger>
+
+                        <Trigger Property="ShowMaximizeButton" Value="False">
+                            <Setter TargetName="PART_Maximize" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <Trigger Property="ResizeMode" Value="NoResize">
+                            <Setter TargetName="PART_Maximize" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Minimize" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

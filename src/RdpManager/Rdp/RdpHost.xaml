@@ -1,0 +1,59 @@
+<UserControl x:Class="RdpManager.Rdp.RdpHost"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:RdpManager.Localization"
+             xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+             Background="{DynamicResource Brush.SessionBackdrop}">
+    <Grid>
+        <wfi:WindowsFormsHost x:Name="FormsHost"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch" />
+
+        <!--
+            Baglanirken / koptuktan sonraki katman.
+            DIKKAT: bu katman gorunurken FormsHost GIZLENIR — WPF ogeleri
+            bir HWND'nin uzerine cizilemez (airspace).
+        -->
+        <Border x:Name="OverlayPanel"
+                Background="{DynamicResource Brush.SessionBackdrop}"
+                Visibility="Collapsed">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock x:Name="OverlayText"
+                           Foreground="#D8D8DA"
+                           FontSize="{StaticResource Font.Size.Normal}"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap"
+                           MaxWidth="460" />
+
+                <!-- Baglanirken: belirsiz ilerleme cizgisi -->
+                <ProgressBar x:Name="ConnectingBar"
+                             Style="{StaticResource ProgressBar.Thin}"
+                             Width="220"
+                             Margin="0,16,0,0"
+                             Visibility="Collapsed" />
+
+                <TextBlock x:Name="CountdownText"
+                           Foreground="{DynamicResource Brush.Accent}"
+                           FontSize="{StaticResource Font.Size.Normal}"
+                           FontWeight="Medium"
+                           TextAlignment="Center"
+                           Margin="0,10,0,0"
+                           Visibility="Collapsed" />
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,18,0,0">
+                    <Button x:Name="ReconnectButton"
+                            Content="{loc:T 'Yeniden baglan'}"
+                            Style="{StaticResource Button.Primary}"
+                            Visibility="Collapsed"
+                            Click="ReconnectButton_Click" />
+                    <Button x:Name="CancelRetryButton"
+                            Content="{loc:T 'Otomatik denemeyi durdur'}"
+                            Style="{StaticResource Button.Ghost}"
+                            Margin="10,0,0,0"
+                            Visibility="Collapsed"
+                            Click="CancelRetryButton_Click" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

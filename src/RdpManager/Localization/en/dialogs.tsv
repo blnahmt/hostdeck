@@ -1,0 +1,120 @@
+# Diyaloglar
+Baglanti	Connection
+GENEL	GENERAL
+Ad	Name
+Sunucu simgesi sec	Choose server icon
+Etiketler	Tags
+Etiketi kaldir	Remove tag
+Etiket yazip Enter'a basin	Type a tag and press Enter
+Etiket ekle	Add tag
+MEVCUT ETIKETLER	EXISTING TAGS
+Renk	Color
+Yok	None
+Sunucu IP	Server IP
+Protokol	Protocol
+KIMLIK BILGILERI	CREDENTIALS
+Kullanici adi	User name
+Parola	Password
+Kayitli parolayi sil	Delete saved password
+GORUNTU	DISPLAY
+Renk derinligi	Color depth
+Olcek %	Scale %
+0 = monitore gore otomatik	0 = automatic based on monitor
+Pencereye olceklendir (smart sizing)	Scale to window (smart sizing)
+Baglanti cubugunu goster	Show connection bar
+YONLENDIRMELER	REDIRECTIONS
+Pano	Clipboard
+Yerel surucular	Local drives
+Yazicilar	Printers
+COM portlari	COM ports
+Akilli kartlar	Smart cards
+Kamera	Camera
+Yerel kameralari uzak oturuma yonlendirir. Sunucu Windows 10 1803 / Server 2019 veya yenisi olmali.	Redirects local cameras to the remote session. The server must be Windows 10 1803 / Server 2019 or later.
+Ses	Audio
+Bu bilgisayarda cal	Play on this computer
+Uzak bilgisayarda cal	Play on remote computer
+Calma	Do not play
+GUVENLIK	SECURITY
+Dogrulama	Authentication
+Sunucuyu dogrulama	Do not verify server
+Dogrulanamazsa baglanma	Do not connect if verification fails
+Dogrulanamazsa uyar	Warn if verification fails
+Koptugunda otomatik yeniden baglan	Reconnect automatically when disconnected
+Windows tuslarini uzak oturuma gonder	Send Windows keys to the remote session
+Kapaliyken Windows tusu ve Win+Shift+S yerel bilgisayara etki eder (yalniz tam ekranda uzak oturuma gider).	When off, the Windows key and Win+Shift+S act on the local computer (they reach the remote session only in full screen).
+Bos birakilirsa dogrudan baglanilir. Gateway yukaridaki kullanici adi ve parolayi kullanir.	If left empty, connects directly. The gateway uses the user name and password above.
+Iptal	Cancel
+Kaydet	Save
+Yeni baglanti	New connection
+Duzenle - {0}	Edit - {0}
+Kayitli parola var. Degistirmek icin yenisini yazin, dokunmazsaniz korunur.	A password is saved. Type a new one to change it, or leave it blank to keep it.
+Parola kaydedilmezse baglanirken Windows sorar.	If no password is saved, Windows asks for it when connecting.
+Sunucu adresi bos olamaz.	Server address cannot be empty.
+Eksik bilgi	Missing information
+Port 1-65535 araliginda olmali.	Port must be between 1 and 65535.
+Gecersiz port	Invalid port
+Parola (tekrar)	Password (again)
+Tamam	OK
+Disa aktarma parolasi	Export password
+Kayitli parolalarin da disa aktarilmasi icin bir parola belirleyin. Dosya bu parolayla sifrelenir (AES-256), ice aktarirken ayni parola sorulur.	Set a password to export saved passwords as well. The file is encrypted with this password (AES-256), and the same password is asked for when importing.
+Bos birakirsaniz baglantilar parolasiz disa aktarilir.\nBu parola hicbir yerde saklanmaz - kaybederseniz dosyadaki parolalar kurtarilamaz.	If left empty, connections are exported without passwords.\nThis password is not stored anywhere - if you lose it, the passwords in the file cannot be recovered.
+Ice aktarma parolasi	Import password
+Bu dosya sifrelenmis parolalar iceriyor. Disa aktarirken belirlediginiz parolayi girin.	This file contains encrypted passwords. Enter the password you set when exporting.
+Parolasiz aktar	Export without passwords
+Disa aktar	Export
+Parolalar birbirini tutmuyor.	Passwords do not match.
+Bu parola hicbir yerde saklanmaz - kaybederseniz dosyadaki parolalar kurtarilamaz.	This password is not stored anywhere - if you lose it, the passwords in the file cannot be recovered.
+Ayarlar	Settings
+Gorunum	Appearance
+Ana renk	Accent color
+Varsayilan baglanti	Default connection
+Sunucu durumu	Server status
+Guncelleme	Updates
+Lisanslar	Licenses
+Palet	Palette
+Tema	Theme
+Sistem	System
+Acik	Light
+Koyu	Dark
+Liste gorunumu	List view
+Liste	List
+Kart	Cards
+Satir sikligi	Row density
+Rahat	Comfortable
+Kompakt	Compact
+Arayuz olcegi	UI scale
+Kucuk	Small
+Buyuk	Large
+Daha buyuk	Larger
+Oturum kucuk resmi	Session thumbnail
+Oturum goruntusunu listede goster	Show session preview in the list
+Cikista temizle	Clear on exit
+Tumunu sil	Delete all
+Klasor	Folder
+Ozel:	Custom:
+Uygula	Apply
+Varsayilan	Default
+Yeni baglanti olustururken bu degerler onceden doldurulur.	These values are prefilled when you create a new connection.
+Sunucu durumu API	Server status API
+Sunucu durum API anahtarinizi girin. Anahtar girilirse listede sunucuda kimin bagli oldugu gorunur.	Enter your server status API key. With a key, the list shows who is connected to each server.
+API Anahtari	API key
+Anahtari bos birakirsaniz sunucu durumu takibi devre disi kalir.	Leave the key empty to disable server status tracking.
+Guncelleme kontrol et	Check for updates
+Guncellemeleri otomatik kontrol et	Check for updates automatically
+Emoji simgeleri:	Emoji icons:
+Lisans:	License:
+Mevcut surum: v{0}	Current version: v{0}
+Kucuk resimler silindi.	Thumbnails deleted.
+Kucuk resim	Thumbnail
+Gecerli bir renk kodu girin (orn. #3B82C4).	Enter a valid color code (e.g. #3B82C4).
+Gecersiz renk	Invalid color
+Yeni surum mevcut: v{0}	New version available: v{0}
+Guncelle	Update
+Guncel sürüm kullaniyorsunuz.	You are using the latest version.
+Kontrol et	Check
+Indiriliyor...	Downloading...
+Guncelleme indirilemedi:\n{0}	Could not download the update:\n{0}
+Guncelleme hatasi	Update error
+Kontrol ediliyor...	Checking...
+VNC istemcisi:	VNC client:
+ve katkida bulunanlar.	and contributors.

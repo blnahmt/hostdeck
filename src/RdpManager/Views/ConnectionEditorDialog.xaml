@@ -1,0 +1,365 @@
+<views:ChromeWindow x:Class="RdpManager.Views.ConnectionEditorDialog"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:views="clr-namespace:RdpManager.Views"
+                    xmlns:loc="clr-namespace:RdpManager.Localization"
+                    Title="{loc:T 'Baglanti'}"
+                    Height="720" Width="560"
+                    ResizeMode="NoResize"
+                    ShowInTaskbar="False"
+                    WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <Style x:Key="FieldLabel" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Foreground" Value="{DynamicResource Brush.TextSecondary}" />
+            <Setter Property="Margin" Value="0,0,14,0" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" Padding="24,18,20,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="118" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="{loc:T 'GENEL'}"
+                           Style="{StaticResource Text.SectionHeader}" Margin="0,0,0,8" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:T 'Ad'}" Style="{StaticResource FieldLabel}" />
+                <Grid Grid.Row="1" Grid.Column="1" Margin="0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Sunucu simgesi: tiklayinca renkli emoji secici acilir -->
+                    <Button x:Name="IconButton" Grid.Column="0" Width="42" Height="34" Margin="0,0,8,0"
+                            Style="{StaticResource Button.Secondary}"
+                            ToolTip="{loc:T 'Sunucu simgesi sec'}"
+                            Click="IconButton_Click">
+                        <views:EmojiText x:Name="IconGlyph" EmojiSize="20" />
+                    </Button>
+
+                    <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding Draft.Name}" />
+
+                    <Popup x:Name="IconPopup" PlacementTarget="{Binding ElementName=IconButton}"
+                           Placement="Bottom" StaysOpen="False" AllowsTransparency="True"
+                           PopupAnimation="Fade"
+                           HorizontalOffset="0" VerticalOffset="4">
+                        <Border Background="{DynamicResource Brush.SurfaceRaised}"
+                                BorderBrush="{DynamicResource Brush.Border}"
+                                BorderThickness="1" Padding="8"
+                                Width="336">
+                            <ScrollViewer MaxHeight="260" VerticalScrollBarVisibility="Auto">
+                                <ItemsControl x:Name="IconItems">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Tag="{Binding}"
+                                                    Width="40" Height="36" Margin="1"
+                                                    Cursor="Hand"
+                                                    Click="IconChoice_Click">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border x:Name="B" Background="Transparent">
+                                                            <views:EmojiText Text="{Binding}" EmojiSize="24"
+                                                                             HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="B" Property="Background" Value="{DynamicResource Brush.Hover}" />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
+                    </Popup>
+                </Grid>
+
+                <!-- Etiketler: grubun yerini aldi, birden fazla olabilir -->
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:T 'Etiketler'}" Style="{StaticResource FieldLabel}" Margin="0,10,14,0" VerticalAlignment="Top" />
+                <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,4">
+                    <ItemsControl ItemsSource="{Binding Tags}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource Brush.SurfaceSunken}"
+                                        BorderBrush="{DynamicResource Brush.Border}"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Padding="9,3"
+                                        Margin="0,0,6,6">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding}" FontSize="{StaticResource Font.Size.Small}" />
+                                        <Button Style="{StaticResource Button.IconOnly}"
+                                                Tag="{StaticResource Icon.Close}"
+                                                Width="14" Height="14" Margin="6,0,0,0"
+                                                ToolTip="{loc:T 'Etiketi kaldir'}"
+                                                Command="{Binding DataContext.RemoveTagCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="TagInput" Grid.Column="0"
+                                 Text="{Binding NewTag, UpdateSourceTrigger=PropertyChanged}"
+                                 ToolTip="{loc:T 'Etiket yazip Enter\'a basin'}"
+                                 KeyDown="TagInput_KeyDown" />
+                        <Button Grid.Column="1" Margin="6,0,0,0"
+                                Style="{StaticResource Button.IconOnly}"
+                                Tag="{StaticResource Icon.Plus}"
+                                ToolTip="{loc:T 'Etiket ekle'}"
+                                Command="{Binding AddTagCommand}" />
+                    </Grid>
+
+                    <!-- Listede kullanilan etiketler: tiklayarak ekle/cikar -->
+                    <StackPanel Margin="0,10,0,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HasKnownTags}" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <TextBlock Text="{loc:T 'MEVCUT ETIKETLER'}"
+                                   Style="{StaticResource Text.SectionHeader}"
+                                   Margin="0,0,0,6" />
+
+                        <ItemsControl ItemsSource="{Binding KnownTags}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Cursor="Hand" Margin="0,0,5,5"
+                                            Command="{Binding DataContext.ToggleKnownTagCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding Name}">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="Chip"
+                                                        Background="{DynamicResource Brush.SurfaceSunken}"
+                                                        BorderBrush="{DynamicResource Brush.Border}"
+                                                        BorderThickness="1"
+                                                        CornerRadius="10"
+                                                        Padding="9,3">
+                                                    <TextBlock x:Name="Label"
+                                                               Text="{Binding Name}"
+                                                               FontSize="{StaticResource Font.Size.Small}"
+                                                               Foreground="{DynamicResource Brush.TextSecondary}" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter TargetName="Chip" Property="Background" Value="{DynamicResource Brush.Selected}" />
+                                                        <Setter TargetName="Chip" Property="BorderBrush" Value="{DynamicResource Brush.Accent}" />
+                                                        <Setter TargetName="Label" Property="Foreground" Value="{DynamicResource Brush.Accent}" />
+                                                    </DataTrigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="Chip" Property="BorderBrush" Value="{DynamicResource Brush.BorderStrong}" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Renk seridi -->
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="{loc:T 'Renk'}" Style="{StaticResource FieldLabel}" Margin="0,12,14,0" VerticalAlignment="Top" />
+                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="0,8">
+                    <ListBox ItemsSource="{Binding ColorOptions}"
+                             SelectedItem="{Binding SelectedColor}"
+                             BorderThickness="0"
+                             Background="Transparent">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Cursor" Value="Hand" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border x:Name="Ring"
+                                                    Width="26" Height="26"
+                                                    Margin="0,0,6,0"
+                                                    BorderThickness="2"
+                                                    BorderBrush="Transparent">
+                                                <Border Width="16" Height="16"
+                                                        Background="{Binding}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="Ring" Property="BorderBrush"
+                                                            Value="{DynamicResource Brush.Text}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                    <Button Content="{loc:T 'Yok'}" Style="{StaticResource Button.Ghost}"
+                            VerticalAlignment="Center"
+                            Command="{Binding ClearColorCommand}" />
+                </StackPanel>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="{loc:T 'Sunucu IP'}" Style="{StaticResource FieldLabel}" />
+                <TextBox   Grid.Row="4" Grid.Column="1" Margin="0,4" Text="{Binding Draft.Address}" />
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Port" Style="{StaticResource FieldLabel}" />
+                <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="0,4">
+                    <TextBox x:Name="PortInput" Width="90" Text="{Binding Draft.Port}" />
+                    <TextBlock Text="{loc:T 'Protokol'}" Style="{StaticResource FieldLabel}" Margin="18,0,10,0" VerticalAlignment="Center" />
+                    <ComboBox x:Name="ProtocolCombo" Width="90"
+                              SelectedValuePath="Content" SelectedValue="{Binding Draft.Protocol}"
+                              SelectionChanged="ProtocolCombo_Changed">
+                        <ComboBoxItem Content="RDP" />
+                        <ComboBoxItem Content="VNC" />
+                        <ComboBoxItem Content="SSH" />
+                    </ComboBox>
+                </StackPanel>
+
+                <TextBlock Grid.Row="6" Grid.ColumnSpan="2" Text="{loc:T 'KIMLIK BILGILERI'}" Style="{StaticResource Text.SectionHeader}" />
+
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="{loc:T 'Kullanici adi'}" Style="{StaticResource FieldLabel}" />
+                <TextBox   Grid.Row="7" Grid.Column="1" Margin="0,4" Text="{Binding Draft.UserName}" />
+
+                <TextBlock Grid.Row="8" Grid.Column="0" Text="Domain" Style="{StaticResource FieldLabel}" />
+                <TextBox   Grid.Row="8" Grid.Column="1" Margin="0,4" Text="{Binding Draft.Domain}" />
+
+                <TextBlock Grid.Row="9" Grid.Column="0" Text="{loc:T 'Parola'}" Style="{StaticResource FieldLabel}" VerticalAlignment="Top" Margin="0,10,14,0" />
+                <StackPanel Grid.Row="9" Grid.Column="1" Margin="0,4">
+                    <PasswordBox x:Name="PasswordInput" />
+                    <TextBlock x:Name="PasswordHint" Style="{StaticResource Text.Muted}"
+                               Margin="0,6,0,0" TextWrapping="Wrap" />
+                    <CheckBox x:Name="ClearPasswordBox" Content="{loc:T 'Kayitli parolayi sil'}"
+                              Margin="0,6,0,0" Visibility="Collapsed" />
+                </StackPanel>
+
+                <TextBlock Grid.Row="10" Grid.ColumnSpan="2" Text="{loc:T 'GORUNTU'}" Style="{StaticResource Text.SectionHeader}" />
+
+                <TextBlock Grid.Row="11" Grid.Column="0" Text="{loc:T 'Renk derinligi'}" Style="{StaticResource FieldLabel}" />
+                <ComboBox  Grid.Row="11" Grid.Column="1" Margin="0,4" Width="140" HorizontalAlignment="Left"
+                           SelectedValuePath="Tag" SelectedValue="{Binding Draft.ColorDepth}">
+                    <ComboBoxItem Content="15 bit"><ComboBoxItem.Tag><sys:Int32>15</sys:Int32></ComboBoxItem.Tag></ComboBoxItem>
+                    <ComboBoxItem Content="16 bit"><ComboBoxItem.Tag><sys:Int32>16</sys:Int32></ComboBoxItem.Tag></ComboBoxItem>
+                    <ComboBoxItem Content="24 bit"><ComboBoxItem.Tag><sys:Int32>24</sys:Int32></ComboBoxItem.Tag></ComboBoxItem>
+                    <ComboBoxItem Content="32 bit"><ComboBoxItem.Tag><sys:Int32>32</sys:Int32></ComboBoxItem.Tag></ComboBoxItem>
+                </ComboBox>
+
+                <TextBlock Grid.Row="12" Grid.Column="0" Text="{loc:T 'Olcek %'}" Style="{StaticResource FieldLabel}" />
+                <StackPanel Grid.Row="12" Grid.Column="1" Orientation="Horizontal" Margin="0,4">
+                    <TextBox Width="90" Text="{Binding Draft.DesktopScaleFactor}" />
+                    <TextBlock Text="{loc:T '0 = monitore gore otomatik'}" Style="{StaticResource Text.Muted}" Margin="10,0,0,0" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="13" Grid.Column="1" Margin="0,8">
+                    <CheckBox Content="{loc:T 'Pencereye olceklendir (smart sizing)'}" IsChecked="{Binding Draft.SmartSizing}" />
+                    <CheckBox Content="{loc:T 'Baglanti cubugunu goster'}" IsChecked="{Binding Draft.DisplayConnectionBar}" />
+                </StackPanel>
+
+                <TextBlock Grid.Row="14" Grid.ColumnSpan="2" Text="{loc:T 'YONLENDIRMELER'}" Style="{StaticResource Text.SectionHeader}" />
+
+                <StackPanel Grid.Row="15" Grid.Column="1">
+                    <CheckBox Content="{loc:T 'Pano'}" IsChecked="{Binding Draft.RedirectClipboard}" />
+                    <CheckBox Content="{loc:T 'Yerel surucular'}" IsChecked="{Binding Draft.RedirectDrives}" />
+                    <CheckBox Content="{loc:T 'Yazicilar'}" IsChecked="{Binding Draft.RedirectPrinters}" />
+                    <CheckBox Content="{loc:T 'COM portlari'}" IsChecked="{Binding Draft.RedirectPorts}" />
+                    <CheckBox Content="{loc:T 'Akilli kartlar'}" IsChecked="{Binding Draft.RedirectSmartCards}" />
+                    <CheckBox Content="{loc:T 'Kamera'}" IsChecked="{Binding Draft.RedirectCameras}"
+                              ToolTip="{loc:T 'Yerel kameralari uzak oturuma yonlendirir. Sunucu Windows 10 1803 / Server 2019 veya yenisi olmali.'}" />
+                </StackPanel>
+
+                <TextBlock Grid.Row="16" Grid.Column="0" Text="{loc:T 'Ses'}" Style="{StaticResource FieldLabel}" Margin="0,12,14,0" />
+                <ComboBox  Grid.Row="16" Grid.Column="1" Margin="0,12,0,0" Width="230" HorizontalAlignment="Left"
+                           SelectedValuePath="Tag" SelectedValue="{Binding Draft.AudioRedirectionMode}">
+                    <ComboBoxItem Content="{loc:T 'Bu bilgisayarda cal'}"><ComboBoxItem.Tag><sys:Int32>0</sys:Int32></ComboBoxItem.Tag></ComboBoxItem>
+                    <ComboBoxItem Content="{loc:T 'Uzak bilgisayarda cal'}"><ComboBoxItem.Tag><sys:Int32>1</sys:Int32></ComboBoxItem.Tag></ComboBoxItem>
+                    <ComboBoxItem Content="{loc:T 'Calma'}"><ComboBoxItem.Tag><sys:Int32>2</sys:Int32></ComboBoxItem.Tag></ComboBoxItem>
+                </ComboBox>
+
+                <TextBlock Grid.Row="17" Grid.ColumnSpan="2" Text="{loc:T 'GUVENLIK'}" Style="{StaticResource Text.SectionHeader}" />
+
+                <TextBlock Grid.Row="18" Grid.Column="0" Text="{loc:T 'Dogrulama'}" Style="{StaticResource FieldLabel}" />
+                <ComboBox  Grid.Row="18" Grid.Column="1" Margin="0,4" Width="260" HorizontalAlignment="Left"
+                           SelectedValuePath="Tag" SelectedValue="{Binding Draft.AuthenticationLevel}">
+                    <ComboBoxItem Content="{loc:T 'Sunucuyu dogrulama'}"><ComboBoxItem.Tag><sys:Int32>0</sys:Int32></ComboBoxItem.Tag></ComboBoxItem>
+                    <ComboBoxItem Content="{loc:T 'Dogrulanamazsa baglanma'}"><ComboBoxItem.Tag><sys:Int32>1</sys:Int32></ComboBoxItem.Tag></ComboBoxItem>
+                    <ComboBoxItem Content="{loc:T 'Dogrulanamazsa uyar'}"><ComboBoxItem.Tag><sys:Int32>2</sys:Int32></ComboBoxItem.Tag></ComboBoxItem>
+                </ComboBox>
+
+                <StackPanel Grid.Row="19" Grid.Column="1" Margin="0,8,0,8">
+                    <CheckBox Content="CredSSP (Network Level Authentication)" IsChecked="{Binding Draft.EnableCredSsp}" />
+                    <CheckBox Content="{loc:T 'Koptugunda otomatik yeniden baglan'}" IsChecked="{Binding Draft.EnableAutoReconnect}" />
+                    <CheckBox Content="{loc:T 'Windows tuslarini uzak oturuma gonder'}"
+                              IsChecked="{Binding Draft.SendWindowsKeys}"
+                              ToolTip="{loc:T 'Kapaliyken Windows tusu ve Win+Shift+S yerel bilgisayara etki eder (yalniz tam ekranda uzak oturuma gider).'}" />
+                </StackPanel>
+
+                <TextBlock Grid.Row="20" Grid.ColumnSpan="2" Text="RD GATEWAY" Style="{StaticResource Text.SectionHeader}" />
+
+                <TextBlock Grid.Row="21" Grid.Column="0" Text="Gateway" Style="{StaticResource FieldLabel}" VerticalAlignment="Top" Margin="0,10,14,0" />
+                <StackPanel Grid.Row="21" Grid.Column="1" Margin="0,4,0,24">
+                    <TextBox Text="{Binding Draft.GatewayHostname}" />
+                    <TextBlock Style="{StaticResource Text.Muted}" Margin="0,6,0,0" TextWrapping="Wrap"
+                               Text="{loc:T 'Bos birakilirsa dogrudan baglanilir. Gateway yukaridaki kullanici adi ve parolayi kullanir.'}" />
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <Border Grid.Row="1"
+                Background="{DynamicResource Brush.Surface}"
+                BorderBrush="{DynamicResource Brush.Border}"
+                BorderThickness="0,1,0,0"
+                Padding="20,14">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="{loc:T 'Iptal'}" Style="{StaticResource Button.Ghost}" Click="Cancel_Click" Margin="0,0,10,0" />
+                <Button Content="{loc:T 'Kaydet'}" Style="{StaticResource Button.Primary}" Click="Save_Click" IsDefault="True" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</views:ChromeWindow>

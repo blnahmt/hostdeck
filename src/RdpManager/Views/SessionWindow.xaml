@@ -1,0 +1,147 @@
+<views:ChromeWindow x:Class="RdpManager.Views.SessionWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+                    xmlns:views="clr-namespace:RdpManager.Views"
+                    xmlns:loc="clr-namespace:RdpManager.Localization"
+                    Title="{loc:T 'Oturumlar'}"
+                    Height="860" Width="1340"
+                    MinHeight="480" MinWidth="760"
+                    WindowStartupLocation="CenterScreen"
+                    ShowTitleBar="False"
+                    TitleBarHeight="32">
+
+    <!--
+        Tek cubuk: sekmeler, "+" ve eylem ikonlari ile pencere dugmeleri
+        ayni 40px'lik seritte. Ayri bir baslik cubugu yok (ShowTitleBar=False).
+        Bos alan Windows'un caption alani oldugu icin surukleme, cift tikla
+        buyutme ve buyutulmusken surukleyip kucultme kendiliginden calisiyor.
+    -->
+    <views:ChromeWindow.TitleBarActions>
+        <StackPanel Orientation="Horizontal" Margin="0,0,6,0">
+            <Button x:Name="FullScreenButton"
+                    Style="{StaticResource Button.IconOnly}"
+                    Tag="{StaticResource Icon.FullScreen}"
+                    Width="26" Height="26"
+                    ToolTip="{loc:T 'Tam ekran'}"
+                    Click="FullScreen_Click" />
+            <Button x:Name="ReconnectButton"
+                    Style="{StaticResource Button.IconOnly}"
+                    Tag="{StaticResource Icon.Reconnect}"
+                    Width="26" Height="26"
+                    ToolTip="{loc:T 'Yeniden baglan'}"
+                    Click="Reconnect_Click" />
+            <Border Width="1" Height="15" Margin="7,0"
+                    Background="{DynamicResource Brush.Border}" />
+        </StackPanel>
+    </views:ChromeWindow.TitleBarActions>
+
+    <Grid>
+        <dragablz:TabablzControl x:Name="SessionTabs"
+                                 Background="{DynamicResource Brush.Background}"
+                                 BorderThickness="0"
+                                 HeaderItemTemplate="{StaticResource SessionTabHeader}"
+                                 ContentTemplate="{StaticResource SessionTabContent}"
+                                 ItemContainerStyle="{StaticResource SessionTabItemStyle}"
+                                 ShowDefaultCloseButton="False">
+            <!-- Sekmelerin solunda uygulama logosu -->
+            <dragablz:TabablzControl.HeaderPrefixContent>
+                <Image Source="pack://application:,,,/Resources/app.ico"
+                       Width="18" Height="18"
+                       Margin="10,0,8,0"
+                       VerticalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality" />
+            </dragablz:TabablzControl.HeaderPrefixContent>
+
+            <!-- Sadece "+": son sekmenin hemen yaninda kalsin diye. -->
+            <dragablz:TabablzControl.HeaderSuffixContent>
+                <!-- HorizontalAlignment=Left sart: Dragablz suffix alanini
+                     ortaliyor, hizalanmazsa "+" seridin ortasinda kaliyor. -->
+                <Button x:Name="AddTabButton"
+                        Style="{StaticResource Button.IconOnly}"
+                        Tag="{StaticResource Icon.Plus}"
+                        Width="26" Height="26"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,0"
+                        ToolTip="{loc:T 'Yeni oturum ac'}"
+                        Click="AddTab_Click" />
+            </dragablz:TabablzControl.HeaderSuffixContent>
+        </dragablz:TabablzControl>
+
+        <!-- Hizli baglanti secici ("+" butonu) -->
+        <Popup x:Name="QuickConnectPopup"
+               PlacementTarget="{Binding ElementName=AddTabButton}"
+               Placement="Bottom"
+               StaysOpen="False"
+               AllowsTransparency="True"
+               PopupAnimation="Fade"
+               Opened="QuickConnectPopup_Opened">
+            <Border Background="{DynamicResource Brush.SurfaceRaised}"
+                    BorderBrush="{DynamicResource Brush.BorderStrong}"
+                    BorderThickness="1"
+                    Width="330"
+                    Margin="0,4,0,0">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                        <TextBox x:Name="QuickSearch"
+                                 TextChanged="QuickSearch_TextChanged"
+                                 PreviewKeyDown="QuickSearch_PreviewKeyDown" />
+                        <TextBlock Text="{loc:T 'Sunucu ara...'}"
+                                   Style="{StaticResource Text.Muted}"
+                                   Margin="11,0,0,0"
+                                   IsHitTestVisible="False"
+                                   Visibility="{Binding Text, ElementName=QuickSearch, Converter={StaticResource EmptyToVisible}}" />
+                    </Grid>
+
+                    <ListBox x:Name="QuickList"
+                             Grid.Row="1"
+                             MaxHeight="320"
+                             MouseDoubleClick="QuickList_MouseDoubleClick"
+                             PreviewKeyDown="QuickList_PreviewKeyDown">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="10,7">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Margin="0,1,9,1"
+                                            Background="{Binding Color, TargetNullValue=Transparent}" />
+                                    <StackPanel Grid.Column="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <views:EmojiText Text="{Binding Icon}" EmojiSize="15"
+                                                             Margin="0,0,7,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Address}" Style="{StaticResource Text.Muted}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,0,0"
+                                                Visibility="{Binding HasRemoteUser, Converter={StaticResource BoolToVisible}}">
+                                        <Ellipse Width="8" Height="8" Fill="{DynamicResource Brush.Accent}" Margin="0,0,5,0"
+                                                 VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding RemoteUser}" FontSize="13.5" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource Brush.Accent}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <TextBlock x:Name="QuickEmpty"
+                               Grid.Row="2"
+                               Text="{loc:T 'Acilabilecek baska baglanti yok.'}"
+                               Style="{StaticResource Text.Muted}"
+                               Margin="10,8"
+                               Visibility="Collapsed" />
+                </Grid>
+            </Border>
+        </Popup>
+    </Grid>
+</views:ChromeWindow>

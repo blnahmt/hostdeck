@@ -1,0 +1,233 @@
+<views:ChromeWindow x:Class="RdpManager.Views.ApiKeyDialog"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:views="clr-namespace:RdpManager.Views"
+                    xmlns:loc="clr-namespace:RdpManager.Localization"
+                    Title="{loc:T 'Ayarlar'}"
+                    Width="660" Height="500"
+                    ResizeMode="NoResize"
+                    ShowInTaskbar="False"
+                    WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <Style x:Key="PageHeader" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="{StaticResource Font.Size.Large}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,14" />
+        </Style>
+        <Style x:Key="FieldLabel" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Foreground" Value="{DynamicResource Brush.TextSecondary}" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="168" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Sol navigasyon -->
+            <Border Grid.Column="0" Background="{DynamicResource Brush.SurfaceSunken}"
+                    BorderBrush="{DynamicResource Brush.Border}" BorderThickness="0,0,1,0">
+                <ListBox x:Name="NavList" Margin="8,14" BorderThickness="0" Background="Transparent"
+                         SelectionChanged="Nav_SelectionChanged">
+                    <ListBoxItem Content="{loc:T 'Gorunum'}" Padding="12,9" />
+                    <ListBoxItem Content="{loc:T 'Ana renk'}" Padding="12,9" />
+                    <ListBoxItem Content="{loc:T 'Varsayilan baglanti'}" Padding="12,9" />
+                    <ListBoxItem x:Name="NavApi" Content="{loc:T 'Sunucu durumu'}" Padding="12,9" />
+                    <ListBoxItem Content="{loc:T 'Guncelleme'}" Padding="12,9" />
+                    <ListBoxItem Content="{loc:T 'Lisanslar'}" Padding="12,9" />
+                </ListBox>
+            </Border>
+
+            <!-- Sayfalar -->
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Padding="24,20,24,10">
+                <Grid>
+                    <!-- Gorunum -->
+                    <StackPanel x:Name="PageAppearance">
+                        <TextBlock Text="{loc:T 'Gorunum'}" Style="{StaticResource PageHeader}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="Dil / Language" Style="{StaticResource FieldLabel}" Margin="0,10,14,0" />
+                            <ComboBox   Grid.Row="5" Grid.Column="1" x:Name="LanguageCombo" Margin="0,10,0,0"
+                                        SelectionChanged="LanguageCombo_Changed">
+                                <ComboBoxItem Content="Turkce" Tag="tr" />
+                                <ComboBoxItem Content="English" Tag="en" />
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{loc:T 'Palet'}" Style="{StaticResource FieldLabel}" Margin="0,10,14,0" />
+                            <ComboBox   Grid.Row="4" Grid.Column="1" x:Name="PaletteCombo" Margin="0,10,0,0"
+                                        SelectionChanged="PaletteCombo_Changed" />
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{loc:T 'Tema'}" Style="{StaticResource FieldLabel}" />
+                            <ComboBox   Grid.Row="0" Grid.Column="1" x:Name="ThemeCombo" Margin="0,0,0,10"
+                                        SelectionChanged="ThemeCombo_Changed">
+                                <ComboBoxItem Content="{loc:T 'Sistem'}" />
+                                <ComboBoxItem Content="{loc:T 'Acik'}" />
+                                <ComboBoxItem Content="{loc:T 'Koyu'}" />
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:T 'Liste gorunumu'}" Style="{StaticResource FieldLabel}" />
+                            <ComboBox   Grid.Row="1" Grid.Column="1" x:Name="ViewCombo" Margin="0,0,0,10"
+                                        SelectionChanged="ViewCombo_Changed">
+                                <ComboBoxItem Content="{loc:T 'Liste'}" />
+                                <ComboBoxItem Content="{loc:T 'Kart'}" />
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:T 'Satir sikligi'}" Style="{StaticResource FieldLabel}" />
+                            <ComboBox   Grid.Row="2" Grid.Column="1" x:Name="DensityCombo" Margin="0,0,0,10"
+                                        SelectionChanged="DensityCombo_Changed">
+                                <ComboBoxItem Content="{loc:T 'Rahat'}" />
+                                <ComboBoxItem Content="{loc:T 'Kompakt'}" />
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="{loc:T 'Arayuz olcegi'}" Style="{StaticResource FieldLabel}" />
+                            <ComboBox   Grid.Row="3" Grid.Column="1" x:Name="ScaleCombo"
+                                        SelectionChanged="ScaleCombo_Changed">
+                                <ComboBoxItem Content="{loc:T 'Kucuk'}" Tag="0.9" />
+                                <ComboBoxItem Content="Normal" Tag="1.0" />
+                                <ComboBoxItem Content="{loc:T 'Buyuk'}" Tag="1.15" />
+                                <ComboBoxItem Content="{loc:T 'Daha buyuk'}" Tag="1.3" />
+                            </ComboBox>
+                        </Grid>
+
+                        <Border Height="1" Margin="0,18,0,14" Background="{DynamicResource Brush.Border}" />
+
+                        <TextBlock Text="{loc:T 'Oturum kucuk resmi'}" FontWeight="SemiBold" Margin="0,0,0,8" />
+                        <CheckBox x:Name="ThumbnailCheck" Content="{loc:T 'Oturum goruntusunu listede goster'}"
+                                  Checked="ThumbnailCheck_Changed" Unchecked="ThumbnailCheck_Changed" />
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <CheckBox x:Name="ClearThumbsCheck" Content="{loc:T 'Cikista temizle'}" VerticalAlignment="Center"
+                                      Checked="ClearThumbs_Changed" Unchecked="ClearThumbs_Changed" />
+                            <Button Content="{loc:T 'Tumunu sil'}" Style="{StaticResource Button.Ghost}" Margin="14,0,0,0"
+                                    Click="DeleteThumbs_Click" />
+                            <Button Content="{loc:T 'Klasor'}" Style="{StaticResource Button.Ghost}" Margin="6,0,0,0"
+                                    Click="OpenThumbsFolder_Click" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Ana renk -->
+                    <StackPanel x:Name="PageAccent" Visibility="Collapsed">
+                        <TextBlock Text="{loc:T 'Ana renk'}" Style="{StaticResource PageHeader}" />
+                        <WrapPanel x:Name="AccentSwatches" />
+                        <StackPanel Orientation="Horizontal" Margin="0,12,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{loc:T 'Ozel:'}" Style="{StaticResource Text.Muted}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <TextBox x:Name="CustomAccentInput" Width="110" VerticalAlignment="Center" />
+                            <Button Content="{loc:T 'Uygula'}" Style="{StaticResource Button.Secondary}"
+                                    Margin="8,0,0,0" Click="ApplyCustomAccent_Click" />
+                            <Button Content="{loc:T 'Varsayilan'}" Style="{StaticResource Button.Ghost}"
+                                    Margin="8,0,0,0" Click="ResetAccent_Click" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Varsayilan baglanti -->
+                    <StackPanel x:Name="PageDefaults" Visibility="Collapsed">
+                        <TextBlock Text="{loc:T 'Varsayilan baglanti'}" Style="{StaticResource PageHeader}" />
+                        <TextBlock Style="{StaticResource Text.Muted}" TextWrapping="Wrap" Margin="0,0,0,14"
+                                   Text="{loc:T 'Yeni baglanti olustururken bu degerler onceden doldurulur.'}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{loc:T 'Kullanici adi'}" Style="{StaticResource FieldLabel}" />
+                            <TextBox   Grid.Row="0" Grid.Column="1" x:Name="DefaultUserInput" Margin="0,0,0,10" />
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Domain" Style="{StaticResource FieldLabel}" />
+                            <TextBox   Grid.Row="1" Grid.Column="1" x:Name="DefaultDomainInput" />
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Sunucu durumu API -->
+                    <StackPanel x:Name="PageApi" Visibility="Collapsed">
+                        <TextBlock Text="{loc:T 'Sunucu durumu API'}" Style="{StaticResource PageHeader}" />
+                        <TextBlock Style="{StaticResource Text.Secondary}" TextWrapping="Wrap" Margin="0,0,0,14"
+                                   Text="{loc:T 'Sunucu durum API anahtarinizi girin. Anahtar girilirse listede sunucuda kimin bagli oldugu gorunur.'}" />
+                        <TextBlock Text="{loc:T 'API Anahtari'}" Style="{StaticResource Text.Muted}" Margin="0,0,0,5" />
+                        <TextBox x:Name="ApiKeyInput" />
+                        <TextBlock Style="{StaticResource Text.Muted}" TextWrapping="Wrap" Margin="0,10,0,0" FontSize="11"
+                                   Text="{loc:T 'Anahtari bos birakirsaniz sunucu durumu takibi devre disi kalir.'}" />
+                    </StackPanel>
+
+                    <!-- Guncelleme -->
+                    <StackPanel x:Name="PageUpdate" Visibility="Collapsed">
+                        <TextBlock Text="{loc:T 'Guncelleme'}" Style="{StaticResource PageHeader}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock x:Name="VersionText" Style="{StaticResource Text.Secondary}" />
+                                <TextBlock x:Name="UpdateStatusText" Style="{StaticResource Text.Muted}" Margin="0,3,0,0" />
+                            </StackPanel>
+                            <Button x:Name="UpdateButton" Grid.Column="1"
+                                    Style="{StaticResource Button.Secondary}"
+                                    Content="{loc:T 'Guncelleme kontrol et'}"
+                                    VerticalAlignment="Center"
+                                    Click="CheckUpdate_Click" />
+                        </Grid>
+                        <CheckBox x:Name="AutoCheckBox" Content="{loc:T 'Guncellemeleri otomatik kontrol et'}"
+                                  Margin="0,14,0,0"
+                                  Checked="AutoCheck_Changed" Unchecked="AutoCheck_Changed" />
+                    </StackPanel>
+
+                    <!-- Lisanslar -->
+                    <StackPanel x:Name="PageLicenses" Visibility="Collapsed">
+                        <TextBlock Text="{loc:T 'Lisanslar'}" Style="{StaticResource PageHeader}" />
+                        <TextBlock Style="{StaticResource Text.Secondary}" TextWrapping="Wrap">
+                            <Run Text="{loc:T 'Emoji simgeleri:'}" />
+                            <Hyperlink NavigateUri="https://github.com/microsoft/fluentui-emoji" RequestNavigate="Link_Navigate">Microsoft Fluent Emoji</Hyperlink>
+                            — © Microsoft Corporation. <Run Text="{loc:T 'Lisans:'}" />
+                            <Hyperlink NavigateUri="https://github.com/microsoft/fluentui-emoji/blob/main/LICENSE" RequestNavigate="Link_Navigate">MIT</Hyperlink>.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Text.Secondary}" TextWrapping="Wrap" Margin="0,10,0,0">
+                            <Run Text="{loc:T 'VNC istemcisi:'}" />
+                            <Hyperlink NavigateUri="https://github.com/karbonbaron/MarcusW.VncClient" RequestNavigate="Link_Navigate">MarcusW.VncClient</Hyperlink>
+                            — © Marcus Wichelmann <Run Text="{loc:T 've katkida bulunanlar.'}" /> <Run Text="{loc:T 'Lisans:'}" />
+                            <Hyperlink NavigateUri="https://github.com/karbonbaron/MarcusW.VncClient/blob/master/LICENSE" RequestNavigate="Link_Navigate">MIT</Hyperlink>.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Text.Secondary}" TextWrapping="Wrap" Margin="0,10,0,0">
+                            <Hyperlink NavigateUri="https://www.bouncycastle.org/csharp/" RequestNavigate="Link_Navigate">Bouncy Castle C#</Hyperlink>
+                            — © Legion of the Bouncy Castle Inc. <Run Text="{loc:T 'Lisans:'}" />
+                            <Hyperlink NavigateUri="https://www.bouncycastle.org/about/license/" RequestNavigate="Link_Navigate">MIT</Hyperlink>.
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <Border Grid.Row="1"
+                Background="{DynamicResource Brush.Surface}"
+                BorderBrush="{DynamicResource Brush.Border}"
+                BorderThickness="0,1,0,0"
+                Padding="20,14">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="{loc:T 'Iptal'}" Style="{StaticResource Button.Ghost}" Click="Cancel_Click" Margin="0,0,10,0" />
+                <Button Content="{loc:T 'Kaydet'}" Style="{StaticResource Button.Primary}" Click="Save_Click" IsDefault="True" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</views:ChromeWindow>

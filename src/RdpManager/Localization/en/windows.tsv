@@ -1,0 +1,106 @@
+# Pencereler
+Sunucu erisilebilir	Server reachable
+Sunucuya erisilemiyor	Server unreachable
+Bu sunucunun acik bir oturumu var	This server has an open session
+Sabitlenmis	Pinned
+Son oturum goruntusu	Last session screenshot
+Ayarlar	Settings
+Ad, adres veya etikete gore ara. Tek sonucta Enter ile baglanir.	Search by name, address or tag. Press Enter to connect when there is a single result.
+Ara...	Search...
+Yeni baglanti	New connection
+Duzenle	Edit
+Cogalt	Duplicate
+Sil	Delete
+Ice aktar (.rdp veya .json)	Import (.rdp or .json)
+Disa aktar (JSON)	Export (JSON)
+Baglanti gecmisi	Connection history
+Sirala	Sort
+Kendi siram (surukleyerek)	Custom order (drag to reorder)
+Ada gore	By name
+Adrese gore	By address
+Son kullanima gore	By last used
+Baglan	Connect
+Sabitle	Pin
+Henuz baglanti yok	No connections yet
+Baslamak icin ilk sunucunu ekle.	Add your first server to get started.
+Guncelleme mevcut: v{0} — Ayarlardan guncelleyebilirsiniz.	Update available: v{0} — you can update from Settings.
+{0} baglantiyi ac	Open {0} connections
+{0} baglantiyi sil	Delete {0} connections
+Sabitlemeyi kaldir	Unpin
+Sabiti kaldir	Unpin
+Baglanti editorunu ac	Open the connection editor
+Son baglantilar ve sureleri	Recent connections and durations
+Gorunum, palet, guncelleme	Appearance, palette, updates
+Acik / koyu tema	Light / dark theme
+Temayi degistir	Switch theme
+Ice aktar	Import
+.rdp veya .json	.rdp or .json
+Disa aktar	Export
+Parolali JSON	Password-protected JSON
+Sunuculari yokla	Check servers
+Erisilebilirligi simdi kontrol et	Check reachability now
+Sunucu listesini goster	Show server list
+Ana pencere	Main window
+Tum oturumlari kapat	Close all sessions
+Acik RDP sekmelerini kapatir	Closes open RDP tabs
+API anahtari kaldirildi, sunucu durumu takibi devre disi.	API key removed, server status tracking disabled.
+API anahtari kaydedildi, sunucu durumlari takip ediliyor.	API key saved, tracking server status.
+Bu adres '{0}' adiyla zaten kayitli.	This address is already saved as '{0}'.
+Farkli kimlik bilgisi veya farkli ayarlar icin ayri bir kayit tutuyorsaniz sorun yok.	That's fine if you keep a separate entry for different credentials or settings.
+Kaydedilsin mi?	Save anyway?
+Ayni adres zaten kayitli	Address already saved
+Once listeden bir baglanti secin.	Select a connection from the list first.
+Once cogaltilacak baglantiyi secin.	Select the connection to duplicate first.
+'{0}' silinsin mi?	Delete '{0}'?
+{0} baglanti silinsin mi?	Delete {0} connections?
+... ve {0} tane daha	... and {0} more
+Silme onayi	Confirm delete
+Desteklenen dosyalar	Supported files
+Uzak masaustu dosyalari	Remote Desktop files
+RdpManager listesi	RdpManager list
+Parola yanlis veya dosya bozuk.	Wrong password or corrupted file.
+Ice aktarma basarisiz	Import failed
+{0} baglanti ice aktarildi.	{0} connections imported.
+{0} ice aktarildi, {1} basarisiz: {2}	{0} imported, {1} failed: {2}
+Disa aktarilacak baglanti yok.	No connections to export.
+parolalar haric	passwords excluded
+parolalar dahil, sifreli	passwords included, encrypted
+{0} baglanti disa aktarildi ({1}).	{0} connections exported ({1}).
+Disa aktarma basarisiz	Export failed
+{0} baglanti	{0} connections
+{0} baglanti - {1} acik oturum	{0} connections - {1} open sessions
+{0} secili	{0} selected
+{0} - hizli baglan	{0} - quick connect
+{0} / {1} baglanti	{0} / {1} connections
+Hazir	Ready
+TARIH	DATE
+SUNUCU	SERVER
+SURE	DURATION
+Henuz bir baglanti kaydi yok.	No connection history yet.
+Cift tikla veya Enter: yeniden baglan	Double-click or press Enter to reconnect
+Gecmisi temizle	Clear history
+Kapat	Close
+'{0}' baglantisi listeden silinmis.	Connection '{0}' has been removed from the list.
+Baglanti bulunamadi	Connection not found
+Tum baglanti gecmisi silinsin mi? Bu islem geri alinamaz.	Delete all connection history? This cannot be undone.
+Hizli baglan	Quick connect
+Sunucu ara, Enter ile baglan  ·  > komutlar	Search servers, Enter to connect  ·  > commands
+Oturumlar	Sessions
+Tam ekran	Full screen
+Yeniden baglan	Reconnect
+Yeni oturum ac	Open new session
+Sunucu ara...	Search servers...
+Acilabilecek baska baglanti yok.	No other connections to open.
+Oturum baglantisi kesildi	Session disconnected
+Oturum araclari	Session tools
+Pencereye don	Back to window
+Ctrl+Alt+Del gonder	Send Ctrl+Alt+Del
+Tum monitorlerde ac (mstsc)	Open on all monitors (mstsc)
+{0} - tam ekran	{0} - full screen
+Simge durumuna kucult	Minimize
+Buyut	Maximize
+Onceki boyut	Restore down
+Sekmeyi kapat	Close tab
+Baglaniyor...	Connecting...
+Bagli	Connected
+Baglanti kesildi	Disconnected

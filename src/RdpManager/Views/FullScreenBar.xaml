@@ -1,0 +1,43 @@
+<Window x:Class="RdpManager.Views.FullScreenBar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:RdpManager.Localization"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        Topmost="True"
+        SizeToContent="WidthAndHeight"
+        Background="Transparent"
+        AllowsTransparency="False"
+        Title="{loc:T 'Oturum araclari'}">
+    <Border Background="{DynamicResource Brush.SurfaceRaised}"
+            BorderBrush="{DynamicResource Brush.BorderStrong}"
+            BorderThickness="1,0,1,1"
+            Padding="12,6">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock x:Name="TitleText" FontWeight="Medium" Margin="4,0,14,0" />
+
+            <Button x:Name="RestoreButton"
+                    Style="{StaticResource Button.IconOnly}"
+                    Tag="{StaticResource Icon.Windowed}"
+                    ToolTip="{loc:T 'Pencereye don'}"
+                    Click="Restore_Click" />
+
+            <Button Style="{StaticResource Button.IconOnly}"
+                    Tag="{StaticResource Icon.Keyboard}"
+                    ToolTip="{loc:T 'Ctrl+Alt+Del gonder'}"
+                    Click="CtrlAltDel_Click" />
+
+            <Button Style="{StaticResource Button.IconOnly}"
+                    Tag="{StaticResource Icon.Reconnect}"
+                    ToolTip="{loc:T 'Yeniden baglan'}"
+                    Click="Reconnect_Click" />
+
+            <Button Style="{StaticResource Button.IconOnly}"
+                    Tag="{StaticResource Icon.Monitors}"
+                    ToolTip="{loc:T 'Tum monitorlerde ac (mstsc)'}"
+                    Click="Mstsc_Click" />
+        </StackPanel>
+    </Border>
+</Window>

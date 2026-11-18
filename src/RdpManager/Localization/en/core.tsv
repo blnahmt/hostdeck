@@ -1,0 +1,57 @@
+# Cekirdek
+{0} acik oturum var. Uygulama kapatilsin mi?	{0} sessions are open. Quit the application?
+Cikis	Exit
+'{0}' listenizde bulunamadi.	'{0}' was not found in your list.
+Baglanti bulunamadi	Connection not found
+'{0}' ({1}) sunucusunda su an '{2}' bagli.\n\nYine de baglanilsin mi?	'{2}' is currently connected to '{0}' ({1}).\n\nConnect anyway?
+Sunucu mesgul	Server busy
+Hata	Error
+Yeniden baglan	Reconnect
+Otomatik denemeyi durdur	Stop auto-retry
+{0} baglaniyor...	Connecting to {0}...
+Baglanti baslatilamadi: {0}	Could not start the connection: {0}
+{0} yeniden baglaniyor...	Reconnecting to {0}...
+Baglanti kesildi (kod {0}).	Disconnected (code {0}).
+Otomatik yeniden baglanma durduruldu.	Automatic reconnect stopped.
+Simdi dene	Try now
+{0} sn sonra yeniden denenecek ({1}/{2})	Retrying in {0} s ({1}/{2})
+Baglanti kesildi.	Disconnected.
+Baglanti bu bilgisayardan kapatildi.	The connection was closed from this computer.
+Oturum uzak kullanici tarafindan kapatildi.	The session was closed by the remote user.
+Oturum sunucu tarafindan sonlandirildi.	The session was ended by the server.
+Sunucu adi cozumlenemedi (DNS hatasi). Adresi kontrol edin.	The server name could not be resolved (DNS error). Check the address.
+Baglanti zaman asimina ugradi. Sunucu yanit vermiyor.	The connection timed out. The server is not responding.
+Sunucuya ulasilamadi. Sunucu kapali olabilir veya port engellenmis olabilir.	The server could not be reached. It may be off or the port may be blocked.
+Sunucu bulunamadi. Adresi kontrol edin.	Server not found. Check the address.
+Ag baglantisi koptu (veri gonderilemedi).	The network connection was lost (data could not be sent).
+Baglanti beklenmedik sekilde koptu (soket kapandi). Ag baglantisini kontrol edin.	The connection dropped unexpectedly (socket closed). Check your network connection.
+Sunucu baglantiyi sonlandirdi.	The server ended the connection.
+Lisans sunucusuna ulasilamadi (RDS lisanslama hatasi).	The license server could not be reached (RDS licensing error).
+SSH acilamadi	Could not open SSH
+'{0}' sekmesinde {1} makinesinde '{2}' kullanicisiyla zaten acik bir oturum var.\n\nWindows ayni kullanici icin ikinci oturum acildiginda mevcut oturumu dusurebilir.\n\nYine de acilsin mi?	Tab '{0}' already has an open session on {1} as user '{2}'.\n\nWindows may drop the existing session when a second session is opened for the same user.\n\nOpen anyway?
+Ayni makinede acik oturum	Session already open on this machine
+Bu baglanti artik kayitli degil.	This connection is no longer saved.
+Duzenle	Edit
+'{0}' baglantisi silinsin mi?\n\nAcik oturum kapanmaz.	Delete connection '{0}'?\n\nThe open session will not be closed.
+Silme onayi	Confirm delete
+Monitorlerinizin olcekleri farkli ({0}).\n\nGomulu RDP kontrolu bu durumda coklu monitor tam ekrani dogru cizemiyor, bu yuzden oturum mstsc.exe ile ayri bir pencerede acilacak.\n\nNot: mstsc modunda RD Gateway calismaz.\n\nDevam edilsin mi?	Your monitors use different scaling ({0}).\n\nThe embedded RDP control cannot draw multi-monitor full screen correctly in this case, so the session will open in a separate mstsc.exe window.\n\nNote: RD Gateway does not work in mstsc mode.\n\nContinue?
+Oturum mstsc.exe ile tum monitorlerde ({0}) acilacak.\n\nBu oturum sekmeli pencerenin disinda, ayri bir mstsc penceresi olur.\n\nDevam edilsin mi?	The session will open with mstsc.exe on all monitors ({0}).\n\nIt will be a separate mstsc window outside the tabbed window.\n\nContinue?
+Coklu monitor	Multiple monitors
+#{0} {1}x{2} %{3}	#{0} {1}x{2} {3}%
+Goster	Show
+Favoriler	Favorites
+Son kullanilanlar	Recent
+Adres veya kullanici adi bosluk, ; veya tirnak iceriyor ya da '-' ile basliyor.	The address or user name contains a space, ; or quote, or starts with '-'.
+Dosya bir baglanti listesi icermiyor.	The file does not contain a connection list.
+Dosya taninmadi.	File not recognized.
+Dosya bos.	The file is empty.
+Bu dosya sifreli, parola gerekiyor.	This file is encrypted; a password is required.
+Sifreli icerik cozuldu ama okunamadi.	The encrypted content was decrypted but could not be read.
+{0} sn	{0} s
+{0} dk	{0} min
+{0} sa {1} dk	{0} h {1} min
+{0} (kopya)	{0} (copy)
+Baglanti kurulamadi: {0}	Could not connect: {0}
+Baglanti koptu, yeniden baglaniliyor...	Connection lost, reconnecting...
+Sunucu parola istiyor. Baglanti editorunden VNC parolasini kaydedin.	The server requires a password. Save the VNC password in the connection editor.
+Desteklenmeyen VNC kimlik dogrulamasi: {0}	Unsupported VNC authentication: {0}
