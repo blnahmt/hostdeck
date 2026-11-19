@@ -71,6 +71,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35" />
     <!--
       Microsoft.Data.Sqlite 10.0.0'in bekledigi surum. 3.0.x'e cikarmak bazi
       kullanici makinelerinde native e_sqlite3 yuklenememesine (VC++ bagimliligi)
@@ -83,6 +84,7 @@
     <PackageReference Include="Serilog" Version="4.2.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+    <PackageReference Include="SSH.NET" Version="2026.0.1" />
   </ItemGroup>
 
   <!-- Quicksand (SIL OFL) exe'ye gomuluyor; hedef makineye kurulum gerekmiyor. -->
@@ -96,6 +98,9 @@
     <Resource Include="Resources\Emoji\emoji-list.txt" />
     <!-- Ingilizce sozluk: Turkce<TAB>Ingilizce. Loc.LoadEnglish tum dosyalari birlestirir. -->
     <EmbeddedResource Include="Localization\en\*.tsv" />
+    <!-- SSH terminali (WebView2 + xterm.js, MIT): exe yaninda Terminal klasorunden yuklenir. -->
+    <None Remove="Terminal\**" />
+    <Content Include="Terminal\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
@@ -109,8 +114,7 @@
     <None Remove="Internal\**" />
   </ItemGroup>
 
-  <Target Name="CheckInternalFiles" BeforeTargets="BeforeBuild"
-          Condition="'$(Edition)' == 'Internal' And !Exists('$(MSBuildThisFileDirectory)Internal\Internal.props')">
+  <Target Name="CheckInternalFiles" BeforeTargets="BeforeBuild" Condition="'$(Edition)' == 'Internal' And !Exists('$(MSBuildThisFileDirectory)Internal\Internal.props')">
     <Error Text="Internal surum icin src\RdpManager\Internal klasoru gerekli (depoda yok). Dis surum icin -p:Edition=Public kullanin." />
   </Target>
 

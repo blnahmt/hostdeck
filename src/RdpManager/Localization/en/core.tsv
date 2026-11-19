@@ -55,3 +55,13 @@ Baglanti kurulamadi: {0}	Could not connect: {0}
 Baglanti koptu, yeniden baglaniliyor...	Connection lost, reconnecting...
 Sunucu parola istiyor. Baglanti editorunden VNC parolasini kaydedin.	The server requires a password. Save the VNC password in the connection editor.
 Desteklenmeyen VNC kimlik dogrulamasi: {0}	Unsupported VNC authentication: {0}
+Terminal baslatilamadi (WebView2 gerekli): {0}	Could not start the terminal (WebView2 required): {0}
+Sunucu anahtari onaylanmadigi icin baglanilmadi.	Not connected because the server key was not accepted.
+Kimlik dogrulama basarisiz: kullanici adi, parola veya anahtar hatali.	Authentication failed: wrong username, password or key.
+SSH icin kullanici adi gerekli.	A username is required for SSH.
+Anahtar dosyasi bulunamadi: {0}	Key file not found: {0}
+Parola kayitli degil. Baglanti editorunden parolayi kaydedin veya SSH anahtari kullanin.	No password saved. Save the password in the connection editor or use an SSH key.
+'{0}' sunucusuna ilk kez baglaniliyor.\n\nAnahtar: {1}\nSHA256: {2}\n\nBu anahtar sunucuya aitse onaylayin. Sunucuya guvenip baglanilsin mi?	Connecting to '{0}' for the first time.\n\nKey: {1}\nSHA256: {2}\n\nConfirm only if this key belongs to the server. Trust the server and connect?
+SSH sunucu anahtari	SSH server key
+UYARI: '{0}' sunucusunun anahtari DEGISTI.\n\nKayitli: {1}\nSimdiki: {2} {3}\n\nSunucu yeniden kurulduysa bu normaldir; degilse araya biri girmis olabilir. Yeni anahtara guvenip baglanilsin mi?	WARNING: the key of server '{0}' has CHANGED.\n\nSaved: {1}\nCurrent: {2} {3}\n\nThis is expected if the server was reinstalled; otherwise someone may be intercepting the connection. Trust the new key and connect?
+SSH sunucu anahtari degisti	SSH server key changed

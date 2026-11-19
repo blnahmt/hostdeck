@@ -119,3 +119,14 @@ Kontrol ediliyor...	Checking...
 VNC istemcisi:	VNC client:
 ve katkida bulunanlar.	and contributors.
 VNC sunucusu parola istiyorsa burada kaydedin; baglanirken sorulmaz.	If the VNC server requires a password, save it here; you will not be asked when connecting.
+SSH anahtari	SSH key
+Ozel anahtar dosyasi (OpenSSH bicimi)	Private key file (OpenSSH format)
+Gozat...	Browse...
+Anahtar sifreliyse parolasini yazin; degilse bos birakin.	If the key is encrypted, enter its passphrase; otherwise leave it empty.
+SSH girisi icin parolayi kaydedin.	Save the password to sign in over SSH.
+SSH ozel anahtari secin	Select SSH private key
+Tum dosyalar	All files
+SSH anahtar dosyasini secin.	Select the SSH key file.
+SSH istemcisi:	SSH client:
+Terminal:	Terminal:
+Giris	Sign-in

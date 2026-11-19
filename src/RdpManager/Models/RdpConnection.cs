@@ -39,7 +39,7 @@ public sealed class RdpConnection : INotifyPropertyChanged
     /// <summary>Son basarili baglanti (unix saniye). "Son kullanim" siralamasi icin.</summary>
     public long? LastConnectedAt { get; set; }
 
-    /// <summary>"RDP", "VNC" veya "SSH". SSH baglantilari Windows Terminal'de acilir.</summary>
+    /// <summary>"RDP", "VNC" veya "SSH". Hepsi uygulamanin kendi sekmesinde acilir.</summary>
     public string Protocol { get; set; } = "RDP";
 
     [JsonIgnore]
@@ -47,6 +47,15 @@ public sealed class RdpConnection : INotifyPropertyChanged
 
     [JsonIgnore]
     public bool IsVnc => string.Equals(Protocol, "VNC", StringComparison.OrdinalIgnoreCase);
+
+    [JsonIgnore]
+    public bool IsRdp => !IsSsh && !IsVnc;
+
+    /// <summary>SSH: anahtar dosyasiyla giris. Bu durumda Password, anahtarin parolasidir (varsa).</summary>
+    public bool SshUseKey { get; set; }
+
+    /// <summary>SSH ozel anahtar dosyasi (OpenSSH bicimi).</summary>
+    public string SshKeyPath { get; set; } = string.Empty;
 
     /// <summary>Protokolun varsayilan portu (editor protokol degisince kullanir).</summary>
     public static int DefaultPort(string protocol) => protocol.ToUpperInvariant() switch

@@ -80,24 +80,6 @@ public sealed class SessionManager
 
     public void Open(RdpConnection stored)
     {
-        // SSH sekme acmaz: Windows Terminal'de acilir; bitisi izlenemedigi icin gecmise yalniz baslangic yazilir.
-        if (stored.IsSsh)
-        {
-            try
-            {
-                SshLauncher.Open(stored);
-            }
-            catch (Exception ex)
-            {
-                Logger.Warning(ex, "SSH acilamadi: {Conn}", stored.DisplayName);
-                MessageBox.Show(ex.Message, Loc.T("SSH acilamadi"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            _repository.MarkConnected(stored.Id);
-            _repository.StartHistory(stored);
-            return;
-        }
-
         // Kural 1: zaten acikssa yenisini acma, mevcudu one getir.
         if (_sessions.TryGetValue(stored.Id, out var existing))
         {
@@ -111,7 +93,7 @@ public sealed class SessionManager
         var prepared = stored.Clone();
         _repository.ResolvePassword(prepared);
 
-        ISessionHost host = prepared.IsVnc ? new VncHost() : new RdpHost();
+        ISessionHost host = prepared.IsVnc ? new VncHost() : prepared.IsSsh ? new SshHost() : new RdpHost();
         host.Initialize(prepared);
 
         var tab = new SessionTabItem(this, host);
@@ -149,6 +131,9 @@ public sealed class SessionManager
     /// </summary>
     private bool ConfirmSessionConflict(RdpConnection candidate)
     {
+        // Yalniz RDP'de ayni kullanicinin ikinci oturumu birincisini dusurur.
+        if (!candidate.IsRdp) return true;
+
         // Kullanici adi bossa Windows soracak; hangi hesapla girilecegi belirsiz.
         if (string.IsNullOrWhiteSpace(candidate.UserName)) return true;
 
@@ -386,7 +371,7 @@ public sealed class SessionManager
 
     public void OpenInMstsc(SessionTabItem tab)
     {
-        if (tab.Connection.IsVnc) return; // mstsc yalniz RDP acar
+        if (!tab.Connection.IsRdp) return; // mstsc yalniz RDP acar
         var layout = MonitorService.DescribeLayout();
         var mixedDpi = MonitorService.HasMixedDpi();
 

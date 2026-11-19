@@ -15,15 +15,54 @@
             <Setter Property="Margin" Value="0,0,14,0" />
             <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
+
+        <!-- Ust protokol sekmeleri: koseli, secili olanin altinda vurgu cizgisi -->
+        <Style x:Key="ProtocolTab" TargetType="RadioButton">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.TextSecondary}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Bd" Background="Transparent" BorderBrush="Transparent"
+                                BorderThickness="0,0,0,2" Padding="0,11">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Brush.Hover}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Brush.Accent}" />
+                                <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" Padding="24,18,20,0">
+        <Border Grid.Row="0" Background="{DynamicResource Brush.Surface}"
+                BorderBrush="{DynamicResource Brush.Border}" BorderThickness="0,0,0,1">
+            <UniformGrid Rows="1" Margin="24,0">
+                <RadioButton x:Name="TabRdp" Content="RDP" Tag="RDP" GroupName="Protocol"
+                             Style="{StaticResource ProtocolTab}" Checked="ProtocolTab_Checked" />
+                <RadioButton x:Name="TabVnc" Content="VNC" Tag="VNC" GroupName="Protocol"
+                             Style="{StaticResource ProtocolTab}" Checked="ProtocolTab_Checked" />
+                <RadioButton x:Name="TabSsh" Content="SSH" Tag="SSH" GroupName="Protocol"
+                             Style="{StaticResource ProtocolTab}" Checked="ProtocolTab_Checked" />
+            </UniformGrid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="24,18,20,0">
             <Grid x:Name="FieldsGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="118" />
@@ -253,14 +292,6 @@
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Port" Style="{StaticResource FieldLabel}" />
                 <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="0,4">
                     <TextBox x:Name="PortInput" Width="90" Text="{Binding Draft.Port}" />
-                    <TextBlock Text="{loc:T 'Protokol'}" Style="{StaticResource FieldLabel}" Margin="18,0,10,0" VerticalAlignment="Center" />
-                    <ComboBox x:Name="ProtocolCombo" Width="90"
-                              SelectedValuePath="Content" SelectedValue="{Binding Draft.Protocol}"
-                              SelectionChanged="ProtocolCombo_Changed">
-                        <ComboBoxItem Content="RDP" />
-                        <ComboBoxItem Content="VNC" />
-                        <ComboBoxItem Content="SSH" />
-                    </ComboBox>
                 </StackPanel>
 
                 <TextBlock Grid.Row="6" Grid.ColumnSpan="2" Text="{loc:T 'KIMLIK BILGILERI'}" Style="{StaticResource Text.SectionHeader}" />
@@ -271,8 +302,25 @@
                 <TextBlock Grid.Row="8" Grid.Column="0" Text="Domain" Style="{StaticResource FieldLabel}" />
                 <TextBox   Grid.Row="8" Grid.Column="1" Margin="0,4" Text="{Binding Draft.Domain}" />
 
-                <TextBlock Grid.Row="9" Grid.Column="0" Text="{loc:T 'Parola'}" Style="{StaticResource FieldLabel}" VerticalAlignment="Top" Margin="0,10,14,0" />
+                <TextBlock x:Name="PasswordLabel" Grid.Row="9" Grid.Column="0" Text="{loc:T 'Parola'}" Style="{StaticResource FieldLabel}" VerticalAlignment="Top" Margin="0,10,14,0" />
                 <StackPanel Grid.Row="9" Grid.Column="1" Margin="0,4">
+                    <!-- Yalniz SSH: parola mi anahtar mi -->
+                    <StackPanel x:Name="SshAuthPanel" Orientation="Horizontal" Margin="0,6,0,10">
+                        <RadioButton x:Name="SshPasswordRadio" Content="{loc:T 'Parola'}" GroupName="SshAuth"
+                                     Checked="SshAuth_Checked" Margin="0,0,18,0" />
+                        <RadioButton x:Name="SshKeyRadio" Content="{loc:T 'SSH anahtari'}" GroupName="SshAuth"
+                                     Checked="SshAuth_Checked" />
+                    </StackPanel>
+                    <Grid x:Name="SshKeyPanel" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="SshKeyInput" Text="{Binding Draft.SshKeyPath}"
+                                 ToolTip="{loc:T 'Ozel anahtar dosyasi (OpenSSH bicimi)'}" />
+                        <Button Grid.Column="1" Content="{loc:T 'Gozat...'}" Style="{StaticResource Button.Ghost}"
+                                Margin="8,0,0,0" Click="BrowseKey_Click" />
+                    </Grid>
                     <PasswordBox x:Name="PasswordInput" />
                     <TextBlock x:Name="PasswordHint" Style="{StaticResource Text.Muted}"
                                Margin="0,6,0,0" TextWrapping="Wrap" />
@@ -351,7 +399,7 @@
             </Grid>
         </ScrollViewer>
 
-        <Border Grid.Row="1"
+        <Border Grid.Row="2"
                 Background="{DynamicResource Brush.Surface}"
                 BorderBrush="{DynamicResource Brush.Border}"
                 BorderThickness="0,1,0,0"

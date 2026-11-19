@@ -29,6 +29,10 @@ public partial class ConnectionEditorDialog : ChromeWindow
         Title = isNew ? Loc.T("Yeni baglanti") : Loc.F("Duzenle - {0}", _viewModel.Draft.DisplayName);
 
         ClearPasswordBox.Visibility = _viewModel.HadPassword ? Visibility.Visible : Visibility.Collapsed;
+
+        var draft = _viewModel.Draft;
+        (draft.IsVnc ? TabVnc : draft.IsSsh ? TabSsh : TabRdp).IsChecked = true;
+        (draft.SshUseKey ? SshKeyRadio : SshPasswordRadio).IsChecked = true;
         UpdateProtocolFields();
     }
 
@@ -47,7 +51,6 @@ public partial class ConnectionEditorDialog : ChromeWindow
             var row = Grid.GetRow(child);
             var visible = row switch
             {
-                9 => !draft.IsSsh,   // ssh.exe parolayi disaridan almiyor
                 14 or 15 => !draft.IsSsh, // VNC'de yalniz pano secenegi gosterilir
                 19 => !draft.IsSsh,  // otomatik yeniden baglanma VNC'de de var
                 _ => rdp || !RdpOnlyRows.Contains(row),
@@ -59,11 +62,20 @@ public partial class ConnectionEditorDialog : ChromeWindow
         foreach (UIElement option in ((System.Windows.Controls.Panel)ClipboardCheck.Parent).Children)
             if (option != ClipboardCheck) option.Visibility = rdp ? Visibility.Visible : Visibility.Collapsed;
 
-        PasswordHint.Text = _viewModel.HadPassword
-            ? Loc.T("Kayitli parola var. Degistirmek icin yenisini yazin, dokunmazsaniz korunur.")
-            : draft.IsVnc
-                ? Loc.T("VNC sunucusu parola istiyorsa burada kaydedin; baglanirken sorulmaz.")
-                : Loc.T("Parola kaydedilmezse baglanirken Windows sorar.");
+        var sshKey = draft.IsSsh && draft.SshUseKey;
+        SshAuthPanel.Visibility = draft.IsSsh ? Visibility.Visible : Visibility.Collapsed;
+        SshKeyPanel.Visibility = sshKey ? Visibility.Visible : Visibility.Collapsed;
+        PasswordLabel.Text = draft.IsSsh ? Loc.T("Giris") : Loc.T("Parola");
+
+        PasswordHint.Text = sshKey
+            ? Loc.T("Anahtar sifreliyse parolasini yazin; degilse bos birakin.")
+            : _viewModel.HadPassword
+                ? Loc.T("Kayitli parola var. Degistirmek icin yenisini yazin, dokunmazsaniz korunur.")
+                : draft.IsVnc
+                    ? Loc.T("VNC sunucusu parola istiyorsa burada kaydedin; baglanirken sorulmaz.")
+                    : draft.IsSsh
+                        ? Loc.T("SSH girisi icin parolayi kaydedin.")
+                        : Loc.T("Parola kaydedilmezse baglanirken Windows sorar.");
     }
 
     public RdpConnection? Result { get; private set; }
@@ -93,23 +105,59 @@ public partial class ConnectionEditorDialog : ChromeWindow
             return;
         }
 
+        if (draft.IsSsh && string.IsNullOrWhiteSpace(draft.UserName))
+        {
+            MessageBox.Show(this, Loc.T("SSH icin kullanici adi gerekli."), Loc.T("Eksik bilgi"),
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        if (draft.IsSsh && draft.SshUseKey && string.IsNullOrWhiteSpace(draft.SshKeyPath))
+        {
+            MessageBox.Show(this, Loc.T("SSH anahtar dosyasini secin."), Loc.T("Eksik bilgi"),
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
         Result = _viewModel.Commit(PasswordInput.Password, ClearPasswordBox.IsChecked == true);
         DialogResult = true;
     }
 
     private void Cancel_Click(object sender, RoutedEventArgs e) => DialogResult = false;
 
-    /// <summary>Protokol degisince portu o protokolun varsayilanina cek (elle degistirilmediyse).</summary>
-    private void ProtocolCombo_Changed(object sender, SelectionChangedEventArgs e)
+    /// <summary>Protokol sekmesi: alanlari guncelle, portu o protokolun varsayilanina cek (elle degistirilmediyse).</summary>
+    private void ProtocolTab_Checked(object sender, RoutedEventArgs e)
     {
+        if (sender is not System.Windows.Controls.RadioButton { Tag: string protocol }) return;
+        var draft = _viewModel.Draft;
+        draft.Protocol = protocol;
         if (!IsLoaded) return;
         UpdateProtocolFields();
-        var draft = _viewModel.Draft;
         var defaults = new[] { "RDP", "VNC", "SSH" }.Select(RdpConnection.DefaultPort);
         // Kullanici portu elle degistirdiyse dokunma; yalniz baska protokolun varsayilanindaysa cevir.
         if (!defaults.Contains(draft.Port) || draft.Port == RdpConnection.DefaultPort(draft.Protocol)) return;
         draft.Port = RdpConnection.DefaultPort(draft.Protocol);
         PortInput.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty)?.UpdateTarget();
+    }
+
+    private void SshAuth_Checked(object sender, RoutedEventArgs e)
+    {
+        _viewModel.Draft.SshUseKey = SshKeyRadio.IsChecked == true;
+        if (IsLoaded) UpdateProtocolFields();
+    }
+
+    private void BrowseKey_Click(object sender, RoutedEventArgs e)
+    {
+        var sshDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ssh");
+        var dialog = new Microsoft.Win32.OpenFileDialog
+        {
+            Title = Loc.T("SSH ozel anahtari secin"),
+            Filter = Loc.T("Tum dosyalar") + " (*.*)|*.*",
+            InitialDirectory = System.IO.Directory.Exists(sshDir) ? sshDir : null,
+        };
+        if (dialog.ShowDialog(this) != true) return;
+        _viewModel.Draft.SshKeyPath = dialog.FileName;
+        SshKeyInput.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty)?.UpdateTarget();
     }
 
     private void IconButton_Click(object sender, RoutedEventArgs e)

@@ -214,6 +214,20 @@
                             — © Legion of the Bouncy Castle Inc. <Run Text="{loc:T 'Lisans:'}" />
                             <Hyperlink NavigateUri="https://www.bouncycastle.org/about/license/" RequestNavigate="Link_Navigate">MIT</Hyperlink>.
                         </TextBlock>
+                        <TextBlock Style="{StaticResource Text.Secondary}" TextWrapping="Wrap" Margin="0,10,0,0">
+                            <Run Text="{loc:T 'SSH istemcisi:'}" />
+                            <Hyperlink NavigateUri="https://github.com/sshnet/SSH.NET" RequestNavigate="Link_Navigate">SSH.NET</Hyperlink>
+                            — © Renci, RobJ, Rob Hague <Run Text="{loc:T 've katkida bulunanlar.'}" /> <Run Text="{loc:T 'Lisans:'}" />
+                            <Hyperlink NavigateUri="https://github.com/sshnet/SSH.NET/blob/develop/LICENSE" RequestNavigate="Link_Navigate">MIT</Hyperlink>.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Text.Secondary}" TextWrapping="Wrap" Margin="0,10,0,0">
+                            <Run Text="{loc:T 'Terminal:'}" />
+                            <Hyperlink NavigateUri="https://github.com/xtermjs/xterm.js" RequestNavigate="Link_Navigate">xterm.js</Hyperlink>
+                            — © The xterm.js authors. <Run Text="{loc:T 'Lisans:'}" />
+                            <Hyperlink NavigateUri="https://github.com/xtermjs/xterm.js/blob/master/LICENSE" RequestNavigate="Link_Navigate">MIT</Hyperlink>.
+                            <Hyperlink NavigateUri="https://developer.microsoft.com/microsoft-edge/webview2/" RequestNavigate="Link_Navigate">Microsoft Edge WebView2</Hyperlink>
+                            — © Microsoft Corporation.
+                        </TextBlock>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>

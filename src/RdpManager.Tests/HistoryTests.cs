@@ -2,26 +2,13 @@ using System.IO;
 using RdpManager.Data;
 using RdpManager.Models;
 using RdpManager.Security;
-using RdpManager.Services;
 using Xunit;
 
 namespace RdpManager.Tests;
 
-public sealed class SshAndHistoryTests : IDisposable
+public sealed class HistoryTests : IDisposable
 {
     private readonly string _directory = Path.Combine(Path.GetTempPath(), "RdpManagerTests", Guid.NewGuid().ToString("N"));
-
-    [Theory]
-    [InlineData("10.0.0.5", true)]
-    [InlineData("root", true)]
-    [InlineData("srv-01.example.com", true)]
-    [InlineData("-oProxyCommand=calc", false)]
-    [InlineData("host; calc", false)]
-    [InlineData("a b", false)]
-    [InlineData("x\"y", false)]
-    [InlineData("", false)]
-    public void Ssh_arguments_are_validated(string value, bool expected)
-        => Assert.Equal(expected, SshLauncher.IsSafeArgument(value));
 
     [Fact]
     public void History_start_end_and_clear()
