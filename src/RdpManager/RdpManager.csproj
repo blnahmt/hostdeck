@@ -12,9 +12,9 @@
     <RootNamespace>RdpManager</RootNamespace>
     <AssemblyName>Hostline RD</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>1.0.5</Version>
-    <AssemblyVersion>1.0.5.0</AssemblyVersion>
-    <FileVersion>1.0.5.0</FileVersion>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
     <Product>Hostline Remote Desktop</Product>
     <Company>Hostline</Company>
     <Description>Hostline Remote Desktop - RDP, VNC ve SSH baglanti yoneticisi</Description>
