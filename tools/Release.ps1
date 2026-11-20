@@ -103,6 +103,7 @@ $editions += @(
         OutDir    = (Join-Path $releaseDir 'public')
         BaseUrl   = $(if ($PublicUpdateBase) { $PublicUpdateBase } else { "https://github.com/blnahmt/hostline/releases/download/v$version" })
         GitHub    = $true
+        Brand     = $true   # kurulum sihirbazinda Hostline gorselleri
         Icon      = $iconFile
     }
 )
@@ -167,7 +168,8 @@ foreach ($e in $editions) {
         "/DPublishDir=$publishDir" `
         "/DOutputDir=$($e.OutDir)" `
         "/DOutputFilename=$setupName" `
-        "/DIconFile=$($e.Icon)"
+        "/DIconFile=$($e.Icon)" `
+        "/D$(if ($e.Contains('Brand')) { 'HostlineBrand' } else { 'NoBrand' })=1"
 
     if ($LASTEXITCODE -ne 0) { Write-Error "Inno Setup basarisiz ($($e.Edition))." }
 

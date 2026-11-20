@@ -11,3 +11,6 @@ release/
 # Sirket ici surum: ad, ikon, adresler. ASLA commit etmeyin (depo herkese acik olabilir).
 src/RdpManager/Internal/
 tools/internal.ps1
+
+# Tanitim sitesi (bilenahmet.com/hostline) depoya girmez; zip olarak ayrica yuklenir.
+website/

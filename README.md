@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="website/img/logo.png" width="96" alt="Hostline RD logo">
+  <img src="docs/images/logo.png" width="96" alt="Hostline RD logo">
 </p>
 
 <h1 align="center">Hostline RD</h1>
@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <img src="website/img/shot-ssh.png" alt="An SSH session open in a Hostline RD tab, showing a coloured shell prompt and command output">
+  <img src="docs/images/shot-ssh.png" alt="An SSH session open in a Hostline RD tab, showing a coloured shell prompt and command output">
 </p>
 
 ## Why Hostline RD
@@ -48,9 +48,9 @@
 - Automatic updates from GitHub Releases
 
 <p align="center">
-  <img src="website/img/shot-main.png" width="360" alt="The connection list with tags, colour strips and reachability dots">
+  <img src="docs/images/shot-main.png" width="360" alt="The connection list with tags, colour strips and reachability dots">
   &nbsp;
-  <img src="website/img/shot-editor.png" width="380" alt="The connection editor with RDP, VNC and SSH tabs">
+  <img src="docs/images/shot-editor.png" width="380" alt="The connection editor with RDP, VNC and SSH tabs">
 </p>
 
 ## Install
@@ -102,7 +102,6 @@ hostline/
 │   └── RdpManager.Tests/      xUnit tests
 ├── lib/                       RDP interop assemblies (generated from mstscax.dll)
 ├── tools/                     Release.ps1, installer.iss, Generate-Interop.ps1
-├── website/                   the bilenahmet.com/hostline site
 └── docs/DEVELOPMENT.md        architecture notes and known pitfalls (Turkish)
 ```
 
