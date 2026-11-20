@@ -123,6 +123,6 @@ Bug reports, ideas and pull requests are welcome. Please read [CONTRIBUTING.md](
 
 ## License
 
-Hostdeck is **source-available** under the [PolyForm Strict License 1.0.0](LICENSE): free for noncommercial use, with one additional permission to modify the code to prepare contributions to this repository. Redistribution and modified versions are not allowed, so there is one official release. Contributions are accepted under the [CLA](CLA.md).
+Hostdeck is **source-available** under the [PolyForm Strict License 1.0.0](LICENSE): free to use for any purpose, including at work, with an additional permission to modify the code to prepare contributions to this repository. Redistribution and modified versions are not allowed, so there is one official release. Contributions are accepted under the [CLA](CLA.md).
 
 The name "Hostdeck" and the logo are not licensed for other uses. Third-party components keep their own licenses (see [Built with](#built-with)).

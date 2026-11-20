@@ -9,7 +9,7 @@ Thanks for helping! Bug reports, ideas and pull requests are welcome.
 
 ## License and CLA
 
-Hostdeck is **source-available** under the [PolyForm Strict License 1.0.0](LICENSE): you can read and use the code for noncommercial purposes, and you may fork and change it **only to prepare pull requests to this repository**. Redistributing the app or a modified version is not allowed, so there is a single official release.
+Hostdeck is **source-available** under the [PolyForm Strict License 1.0.0](LICENSE): anyone can read the code and use the app for any purpose, including at work, and you may fork and change it **only to prepare pull requests to this repository**. Redistributing the app or a modified version is not allowed, so there is a single official release.
 
 Before your first pull request can be merged, you will be asked to sign the [Contributor License Agreement](CLA.md). A bot comments on your pull request; sign by replying with exactly:
 
