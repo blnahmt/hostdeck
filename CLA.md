@@ -5,8 +5,8 @@ Ahmet Bilen (https://github.com/blnahmt, "the Maintainer"). This agreement makes
 for your contributions, so the Project can keep a single official release
 and, if ever needed, change its license.
 
-By signing (for example by commenting on a pull request through CLA
-Assistant), you ("You") agree to the following for every contribution You
+By signing (by posting the sign-off comment on a pull request, as the CLA
+bot asks), you ("You") agree to the following for every contribution You
 submit to the Project, now or in the future.
 
 1. **Definitions.** A "Contribution" is any code, documentation, artwork or
