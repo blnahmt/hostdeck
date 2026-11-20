@@ -14,6 +14,7 @@ public static class AppEdition
     public const string UpdateUrl = "https://github.com/blnahmt/hostline/releases/latest/download/latest.json";
     public static bool HasServerStatus => false;      // sirket ici doluluk API'si yalniz ic surumde
     public const string DefaultPalette = "Hostline";
+    public static bool IsPublic => true;
     public const bool FollowsSystemLanguage = true;    // ilk acilista Windows dili (TR degilse EN)
 #else
     // Degerler git'e girmeyen Internal/InternalEdition.cs'te.
@@ -23,6 +24,7 @@ public static class AppEdition
     public const string UpdateUrl = InternalEdition.UpdateUrl;
     public static bool HasServerStatus => true;
     public const string DefaultPalette = "Klasik";
+    public static bool IsPublic => false;
     public const bool FollowsSystemLanguage = false;   // ic surum Turkce baslar
 #endif
 }

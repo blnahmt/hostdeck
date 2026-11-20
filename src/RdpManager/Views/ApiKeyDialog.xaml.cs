@@ -76,6 +76,14 @@ public partial class ApiKeyDialog : ChromeWindow
         CustomAccentInput.Text = _theme.AccentColor ?? _theme.DefaultAccent;
 
         VersionText.Text = Loc.F("Mevcut surum: v{0}", UpdateService.CurrentVersion);
+
+        // Hakkinda
+        AboutAppName.Text = AppEdition.Name;
+        AboutVersion.Text = Loc.F("Surum {0}", UpdateService.CurrentVersion);
+        GitHubLine.Visibility = AppEdition.IsPublic ? Visibility.Visible : Visibility.Collapsed; // ic surum herkese acik depoya baglanmasin
+        UpdateDeveloperLogo();
+        _theme.ThemeChanged += OnThemeChanged;
+        Closed += (_, _) => _theme.ThemeChanged -= OnThemeChanged;
         RefreshUpdateStatus();
 
         if (!AppEdition.HasServerStatus) NavApi.Visibility = Visibility.Collapsed;
@@ -83,6 +91,13 @@ public partial class ApiKeyDialog : ChromeWindow
         _ready = true;
         NavList.SelectedIndex = 0;
     }
+
+    private void OnThemeChanged(object? sender, EventArgs e) => UpdateDeveloperLogo();
+
+    /// <summary>Lacivert logo acik temada, beyaz logo koyu temada okunur.</summary>
+    private void UpdateDeveloperLogo()
+        => DeveloperLogo.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(
+            $"pack://application:,,,/Resources/Developer/ahmet-bilen-{(_theme.IsDarkActive ? "dark" : "light")}.png"));
 
     private void Nav_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {

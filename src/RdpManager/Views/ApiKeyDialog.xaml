@@ -43,7 +43,7 @@
                     <ListBoxItem Content="{loc:T 'Varsayilan baglanti'}" Padding="12,9" />
                     <ListBoxItem x:Name="NavApi" Content="{loc:T 'Sunucu durumu'}" Padding="12,9" />
                     <ListBoxItem Content="{loc:T 'Guncelleme'}" Padding="12,9" />
-                    <ListBoxItem Content="{loc:T 'Lisanslar'}" Padding="12,9" />
+                    <ListBoxItem Content="{loc:T 'Hakkinda'}" Padding="12,9" />
                 </ListBox>
             </Border>
 
@@ -196,7 +196,26 @@
 
                     <!-- Lisanslar -->
                     <StackPanel x:Name="PageLicenses" Visibility="Collapsed">
-                        <TextBlock Text="{loc:T 'Lisanslar'}" Style="{StaticResource PageHeader}" />
+                        <TextBlock Text="{loc:T 'Hakkinda'}" Style="{StaticResource PageHeader}" />
+                        <TextBlock x:Name="AboutAppName" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock x:Name="AboutVersion" Style="{StaticResource Text.Secondary}" Margin="0,2,0,0" />
+                        <TextBlock Text="{loc:T 'RDP, VNC ve SSH baglantilari tek pencerede, sekmeler halinde.'}"
+                                   Style="{StaticResource Text.Secondary}" TextWrapping="Wrap" Margin="0,8,0,0" />
+
+                        <TextBlock Text="{loc:T 'GELISTIRICI'}" Style="{StaticResource Text.SectionHeader}" Margin="0,24,0,12" />
+                        <Image x:Name="DeveloperLogo" Width="220" HorizontalAlignment="Left"
+                               RenderOptions.BitmapScalingMode="HighQuality" AutomationProperties.Name="Ahmet Bilen" />
+                        <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                            <TextBlock Style="{StaticResource Text.Secondary}">
+                                <Hyperlink NavigateUri="https://bilenahmet.com" RequestNavigate="Link_Navigate">bilenahmet.com</Hyperlink>
+                            </TextBlock>
+                            <TextBlock x:Name="GitHubLine" Style="{StaticResource Text.Secondary}" Margin="16,0,0,0">
+                                <Hyperlink NavigateUri="https://github.com/blnahmt/hostline" RequestNavigate="Link_Navigate">GitHub</Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                        <TextBlock Text="© 2026 Ahmet Bilen" Style="{StaticResource Text.Muted}" Margin="0,8,0,0" />
+
+                        <TextBlock Text="{loc:T 'LISANSLAR'}" Style="{StaticResource Text.SectionHeader}" Margin="0,24,0,10" />
                         <TextBlock Style="{StaticResource Text.Secondary}" TextWrapping="Wrap">
                             <Run Text="{loc:T 'Emoji simgeleri:'}" />
                             <Hyperlink NavigateUri="https://github.com/microsoft/fluentui-emoji" RequestNavigate="Link_Navigate">Microsoft Fluent Emoji</Hyperlink>

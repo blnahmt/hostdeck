@@ -92,6 +92,8 @@
   <!-- Quicksand (SIL OFL) exe'ye gomuluyor; hedef makineye kurulum gerekmiyor. -->
   <ItemGroup>
     <Resource Include="Resources\app.ico" />
+    <!-- Hakkinda sayfasi: gelistirici logosu (acik/koyu tema) -->
+    <Resource Include="Resources\Developer\*.png" />
     <Resource Include="Resources\Fonts\*.ttf" />
     <None Include="Resources\Fonts\OFL.txt" CopyToOutputDirectory="PreserveNewest" />
     <!-- Microsoft Fluent Emoji gorselleri (MIT) ve gomulu emoji listesi -->

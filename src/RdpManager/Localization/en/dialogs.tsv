@@ -130,3 +130,8 @@ SSH anahtar dosyasini secin.	Select the SSH key file.
 SSH istemcisi:	SSH client:
 Terminal:	Terminal:
 Giris	Sign-in
+Hakkinda	About
+RDP, VNC ve SSH baglantilari tek pencerede, sekmeler halinde.	RDP, VNC and SSH connections in one window, as tabs.
+GELISTIRICI	DEVELOPER
+LISANSLAR	LICENSES
+Surum {0}	Version {0}
