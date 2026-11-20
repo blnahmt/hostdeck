@@ -1,5 +1,5 @@
-# Release.ps1 - Hostline RD (+ varsa sirket ici surum) release build + Inno Setup installer + latest.json
-# Sirket ici surumun ad/adres/ikon bilgisi git'e girmeyen tools/internal.ps1'de; dosya yoksa yalniz Hostline RD uretilir.
+# Release.ps1 - Hostdeck (+ varsa sirket ici surum) release build + Inno Setup installer + latest.json
+# Sirket ici surumun ad/adres/ikon bilgisi git'e girmeyen tools/internal.ps1'de; dosya yoksa yalniz Hostdeck uretilir.
 #
 # Kullanim (imzasiz):
 #   powershell -ExecutionPolicy Bypass -File tools\Release.ps1
@@ -17,7 +17,7 @@ param(
     [string]$PfxPath,
     [string]$PfxPassword,
     [string]$TimestampUrl = 'http://timestamp.digicert.com',
-    # Dis surum (Hostline RD) indirme klasoru. Bossa GitHub release'i: .../releases/download/v<surum>
+    # Dis surum (Hostdeck) indirme klasoru. Bossa GitHub release'i: .../releases/download/v<surum>
     [string]$PublicUpdateBase = '',
     # Yalniz bir surum: Internal veya Public. Bossa ikisi de.
     [ValidateSet('', 'Internal', 'Public')][string]$Only = ''
@@ -95,15 +95,15 @@ if ($InternalEdition) { $editions += $InternalEdition }
 $editions += @(
     [ordered]@{
         Edition   = 'Public'
-        Name      = 'Hostline RD'
-        SetupBase = 'HostlineRD'   # GitHub dosya adindaki boslugu noktaya ceviriyor; bosluksuz ad
-        Publisher = 'Hostline'
+        Name      = 'Hostdeck'
+        SetupBase = 'Hostdeck'     # GitHub dosya adindaki boslugu noktaya ceviriyor; ad bosluksuz kalmali
+        Publisher = 'Ahmet Bilen'
         AppGuid   = 'A74335E6-F072-4270-B846-B481BB4A8C87'
-        Scheme    = 'hostline'
+        Scheme    = 'hostdeck'
         OutDir    = (Join-Path $releaseDir 'public')
-        BaseUrl   = $(if ($PublicUpdateBase) { $PublicUpdateBase } else { "https://github.com/blnahmt/hostline/releases/download/v$version" })
+        BaseUrl   = $(if ($PublicUpdateBase) { $PublicUpdateBase } else { "https://github.com/blnahmt/hostdeck/releases/download/v$version" })
         GitHub    = $true
-        Brand     = $true   # kurulum sihirbazinda Hostline gorselleri
+        Brand     = $true   # kurulum sihirbazinda Hostdeck gorselleri + eski ad (Hostline RD) temizligi
         Icon      = $iconFile
     }
 )
@@ -169,7 +169,7 @@ foreach ($e in $editions) {
         "/DOutputDir=$($e.OutDir)" `
         "/DOutputFilename=$setupName" `
         "/DIconFile=$($e.Icon)" `
-        "/D$(if ($e.Contains('Brand')) { 'HostlineBrand' } else { 'NoBrand' })=1"
+        "/D$(if ($e.Contains('Brand')) { 'HostdeckBrand' } else { 'NoBrand' })=1"
 
     if ($LASTEXITCODE -ne 0) { Write-Error "Inno Setup basarisiz ($($e.Edition))." }
 
@@ -223,7 +223,7 @@ foreach ($s in $summary) {
         if ($s.GitHub) {
             # Yayinlamak disa donuk bir adim: komut yalniz yazdirilir, calistirilmaz.
             Write-Host "    GitHub'da yayinlamak icin:" -ForegroundColor Yellow
-            Write-Host "    gh release create v$version `"$($s.Setup)`" `"$($s.Latest)`" --repo blnahmt/hostline --title `"Hostline RD $version`" --generate-notes"
+            Write-Host "    gh release create v$version `"$($s.Setup)`" `"$($s.Latest)`" --repo blnahmt/hostdeck --title `"Hostdeck $version`" --generate-notes"
         } else {
             Write-Host "    Sunucuya yukle: $($s.Name) ve latest.json  ->  $($s.BaseUrl)/" -ForegroundColor Yellow
         }

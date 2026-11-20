@@ -1,10 +1,10 @@
 # Geliştirici notları
 
-Hostline RD'nin iç yapısı ve dikkat edilmesi gereken tuzaklar. Kullanıcı belgeleri için [README](../README.md).
+Hostdeck'in iç yapısı ve dikkat edilmesi gereken tuzaklar. Kullanıcı belgeleri için [README](../README.md).
 
 ## Sürümler
 
-Depodaki tek sürüm **Hostline RD** (`dotnet build` varsayılanı). Kod `-p:Edition=Internal` ile
+Depodaki tek sürüm **Hostdeck** (`dotnet build` varsayılanı). Kod `-p:Edition=Internal` ile
 şirket içi bir sürüm de üretebiliyor; o sürümün adı, ikonu ve adresleri depoya girmeyen
 `src/RdpManager/Internal/` ve `tools/internal.ps1` dosyalarında durur.
 
@@ -34,7 +34,7 @@ dotnet run --project src/RdpManager -c Debug
 ```text
 src/RdpManager/
   App.xaml(.cs)        açılış, tek kopya kilidi, dil, DI, Serilog, global hata yakalama
-  AppEdition.cs        sürüme göre ad/kimlik/adresler (Hostline RD / iç sürüm)
+  AppEdition.cs        sürüme göre ad/kimlik/adresler (Hostdeck / iç sürüm)
   Rdp/
     ISessionHost.cs    sekmenin gördüğü ortak yüzey (RDP/VNC/SSH)
     RdpHost.xaml(.cs)  RDP oturumu (ActiveX) — asla yeniden yaratılmaz, re-parent edilir
@@ -49,7 +49,7 @@ src/RdpManager/
   Terminal/            SSH sekmesinin xterm.js sayfası
   Internal/            (git'e girmez) iç sürümün ad/ikon/adresleri
 lib/                   üretilen RDP interop DLL'leri
-tools/                 Release.ps1, installer.iss, Generate-Interop.ps1, Make-HostlineIcon.ps1
+tools/                 Release.ps1, installer.iss, Generate-Interop.ps1, Make-HostdeckIcon.ps1
 ```
 
 ## Bilinmesi gerekenler

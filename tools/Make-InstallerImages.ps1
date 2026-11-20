@@ -1,7 +1,7 @@
-# Make-InstallerImages.ps1 - Hostline RD kurulum sihirbazi gorsellerini uretir (acik + koyu, 3 olcek).
+# Make-InstallerImages.ps1 - Hostdeck kurulum sihirbazi gorsellerini uretir (acik + koyu, 3 olcek).
 # Kullanim: powershell -ExecutionPolicy Bypass -File tools\Make-InstallerImages.ps1
 # Cikti: tools\installer\wizard-{light|dark}-{100|150|200}.png ve small-{100|150|200}.png
-# Kaynak: src\RdpManager\Branding\Hostline\logo-256.png ve Quicksand fontu.
+# Kaynak: src\RdpManager\Branding\Hostdeck\logo-256.png ve Quicksand fontu.
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -11,7 +11,7 @@ $repo   = Split-Path $PSScriptRoot -Parent
 $outDir = Join-Path $PSScriptRoot 'installer'
 New-Item -ItemType Directory -Force $outDir | Out-Null
 
-$logo  = [Drawing.Image]::FromFile((Join-Path $repo 'src\RdpManager\Branding\Hostline\logo-256.png'))
+$logo  = [Drawing.Image]::FromFile((Join-Path $repo 'src\RdpManager\Branding\Hostdeck\logo-256.png'))
 $fonts = New-Object Drawing.Text.PrivateFontCollection
 $fonts.AddFontFile((Join-Path $repo 'src\RdpManager\Resources\Fonts\Quicksand-Bold.ttf'))
 $fonts.AddFontFile((Join-Path $repo 'src\RdpManager\Resources\Fonts\Quicksand-Medium.ttf'))
@@ -23,7 +23,7 @@ $themes = @{
 }
 function C([string]$hex) { [Drawing.ColorTranslator]::FromHtml($hex) }
 
-# Sondaki boslugu da olcen bicim ("Hostline " + "RD" bitisik cikmasin).
+# Sondaki boslugu da olcen bicim (iki parcali yazi bosluklu olursa bitisik cikmasin).
 $fmt = [Drawing.StringFormat]::GenericTypographic.Clone()
 $fmt.FormatFlags = $fmt.FormatFlags -bor [Drawing.StringFormatFlags]::MeasureTrailingSpaces
 
@@ -49,7 +49,7 @@ foreach ($name in $themes.Keys) {
         $g.DrawImage($logo, [int](($w - $size) / 2), [int](104 * $k), $size, $size)
 
         $font = New-Object Drawing.Font $family, ([single](22 * $k)), ([Drawing.FontStyle]::Bold), ([Drawing.GraphicsUnit]::Pixel)
-        $part1 = 'Hostline '; $part2 = 'RD'
+        $part1 = 'Host'; $part2 = 'deck'
         $w1 = $g.MeasureString($part1, $font, [Drawing.PointF]::Empty, $fmt).Width
         $w2 = $g.MeasureString($part2, $font, [Drawing.PointF]::Empty, $fmt).Width
         $x = ($w - $w1 - $w2) / 2; $y = 220 * $k

@@ -1,17 +1,17 @@
-# Make-HostlineIcon.ps1 - Hostline RD logosunu (sekme + cerceve + H + imlec) ICO/PNG olarak uretir.
-# Kullanim: powershell -ExecutionPolicy Bypass -File tools\Make-HostlineIcon.ps1
-# Cikti: src\RdpManager\Resources\app.ico (uygulama ikonu) ve Branding\Hostline\logo-256.png
+# Make-HostdeckIcon.ps1 - Hostdeck logosunu (sekme + cerceve + H + imlec) ICO/PNG olarak uretir.
+# Kullanim: powershell -ExecutionPolicy Bypass -File tools\Make-HostdeckIcon.ps1
+# Cikti: src\RdpManager\Resources\app.ico (uygulama ikonu) ve Branding\Hostdeck\logo-256.png
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 
-$outDir = Join-Path (Split-Path $PSScriptRoot -Parent) 'src\RdpManager\Branding\Hostline'
+$outDir = Join-Path (Split-Path $PSScriptRoot -Parent) 'src\RdpManager\Branding\Hostdeck'
 New-Item -ItemType Directory -Force $outDir | Out-Null
 
 $black = [System.Drawing.Color]::FromArgb(255, 10, 10, 10)
 $white = [System.Drawing.Color]::White
-$red   = [System.Drawing.Color]::FromArgb(255, 227, 93, 91)   # #E35D5B, Hostline yumusak kirmizi
+$red   = [System.Drawing.Color]::FromArgb(255, 227, 93, 91)   # #E35D5B, Hostdeck yumusak kirmizi
 
 # Koordinatlar 100 birimlik kare uzerinde: x1, y1, x2, y2, renk.
 $full = @(

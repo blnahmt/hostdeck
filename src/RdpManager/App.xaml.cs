@@ -30,7 +30,12 @@ public partial class App : Application
     /// Dil, App.xaml kaynaklari (Styles.xaml'deki menuler dahil) yuklenmeden ONCE secilmeli:
     /// {loc:T} metni yuklenirken cevriliyor. Kurucu InitializeComponent'ten once calisir.
     /// </summary>
-    public App() => Localization.Loc.Initialize(ReadLanguageSetting());
+    public App()
+    {
+        // Dil ayari okunmadan once: okuma yeni klasorde bos bir DB olusturur ve tasimayi engeller.
+        MigrateDataDirectory();
+        Localization.Loc.Initialize(ReadLanguageSetting());
+    }
 
     private static string? ReadLanguageSetting()
     {
@@ -265,7 +270,6 @@ public partial class App : Application
         };
         listener.Start();
 
-        MigrateDataDirectory();
         Directory.CreateDirectory(DataDirectory);
         ConfigureLogging();
 
@@ -352,12 +356,36 @@ public partial class App : Application
         return provider;
     }
 
+    /// <summary>Eski ad(lar)la kurulmus verinin klasorunu yeni ada tasir (yeni klasor yoksa).</summary>
     private static void MigrateDataDirectory()
     {
-        var oldDir = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RdpManager");
-        if (Directory.Exists(oldDir) && !Directory.Exists(DataDirectory))
-            Directory.Move(oldDir, DataDirectory);
+        var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        try
+        {
+            MoveLegacyDataDirectory(appData, DataDirectory, AppEdition.LegacyIds);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // Eski surum hala acik (dosyalar kilitli). Bos veriyle baslarsak tasima bir daha denenmez.
+            Loc.Initialize(null);   // ayar okunamaz; sistem dili
+            MessageBox.Show(Loc.F("{0} klasoru tasinamadi. Uygulamanin eski surumunu kapatip tekrar deneyin.", appData),
+                AppEdition.Name, MessageBoxButton.OK, MessageBoxImage.Warning);
+            Environment.Exit(1);
+        }
+    }
+
+    /// <summary>Hedef yoksa ilk bulunan eski klasoru hedefe tasir. Tasinan klasoru (yoksa null) dondurur.</summary>
+    public static string? MoveLegacyDataDirectory(string appData, string target, IEnumerable<string> legacyIds)
+    {
+        if (Directory.Exists(target)) return null;
+        foreach (var legacy in legacyIds)
+        {
+            var oldDir = Path.Combine(appData, legacy);
+            if (!Directory.Exists(oldDir)) continue;
+            Directory.Move(oldDir, target);
+            return oldDir;
+        }
+        return null;
     }
 
     private static void ConfigureLogging()

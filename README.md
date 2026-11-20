@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/images/logo.png" width="96" alt="Hostline RD logo">
+  <img src="docs/images/logo.png" width="96" alt="Hostdeck logo">
 </p>
 
-<h1 align="center">Hostline RD</h1>
+<h1 align="center">Hostdeck</h1>
 
 <p align="center">
   <b>RDP, VNC and SSH in one tabbed window.</b><br>
@@ -10,16 +10,16 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/blnahmt/hostline/releases/latest"><b>Download for Windows</b></a> ·
-  <a href="https://bilenahmet.com/hostline/">Website</a> ·
-  <a href="https://github.com/blnahmt/hostline/issues">Report an issue</a>
+  <a href="https://github.com/blnahmt/hostdeck/releases/latest"><b>Download for Windows</b></a> ·
+  <a href="https://bilenahmet.com/hostdeck/">Website</a> ·
+  <a href="https://github.com/blnahmt/hostdeck/issues">Report an issue</a>
 </p>
 
 <p align="center">
-  <img src="docs/images/shot-ssh.png" alt="An SSH session open in a Hostline RD tab, showing a coloured shell prompt and command output">
+  <img src="docs/images/shot-ssh.png" alt="An SSH session open in a Hostdeck tab, showing a coloured shell prompt and command output">
 </p>
 
-## Why Hostline RD
+## Why Hostdeck
 
 - **Native, not a browser in disguise.** Built with .NET 10 and WPF. RDP sessions use Microsoft's own Remote Desktop ActiveX control (the same engine as `mstsc`), so display quality, DPI scaling and clipboard behave like the built-in client.
 - **Everything in tabs.** RDP, VNC and SSH sessions live side by side. Drag a tab out into its own window, go full screen, or span all monitors.
@@ -55,7 +55,7 @@
 
 ## Install
 
-1. Download `HostlineRD_<version>_x64-setup.exe` from the [latest release](https://github.com/blnahmt/hostline/releases/latest).
+1. Download `Hostdeck_<version>_x64-setup.exe` from the [latest release](https://github.com/blnahmt/hostdeck/releases/latest).
 2. Run it. No administrator rights are needed; it installs for the current user.
 
 **Requirements**
@@ -67,15 +67,15 @@ The installer is not code-signed yet, so SmartScreen may ask you to confirm.
 
 ## Privacy
 
-Connections, settings and history are stored in `%AppData%\HostlineRD`. The app only talks to the servers you connect to, checks whether they are reachable, and downloads `latest.json` from GitHub to look for updates (you can turn this off in Settings).
+Connections, settings and history are stored in `%AppData%\Hostdeck`. The app only talks to the servers you connect to, checks whether they are reachable, and downloads `latest.json` from GitHub to look for updates (you can turn this off in Settings).
 
 ## Build from source
 
 Prerequisites: [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) and Windows.
 
 ```powershell
-git clone https://github.com/blnahmt/hostline.git
-cd hostline
+git clone https://github.com/blnahmt/hostdeck.git
+cd hostdeck
 dotnet build RdpManager.sln -c Debug
 dotnet run --project src/RdpManager
 ```
@@ -87,7 +87,7 @@ Release builds and the installer are produced by `tools/Release.ps1` (needs [Inn
 ## Project structure
 
 ```text
-hostline/
+hostdeck/
 ├── src/
 │   ├── RdpManager/            the app (WPF, .NET 10)
 │   │   ├── App.xaml.cs        startup, single instance, language, logging
@@ -123,6 +123,6 @@ Bug reports, ideas and pull requests are welcome. Please read [CONTRIBUTING.md](
 
 ## License
 
-Hostline RD is **source-available** under the [PolyForm Strict License 1.0.0](LICENSE): free for noncommercial use, with one additional permission to modify the code to prepare contributions to this repository. Redistribution and modified versions are not allowed, so there is one official release. Contributions are accepted under the [CLA](CLA.md).
+Hostdeck is **source-available** under the [PolyForm Strict License 1.0.0](LICENSE): free for noncommercial use, with one additional permission to modify the code to prepare contributions to this repository. Redistribution and modified versions are not allowed, so there is one official release. Contributions are accepted under the [CLA](CLA.md).
 
-The names "Hostline" and "Hostline RD" and the logo are not licensed for other uses. Third-party components keep their own licenses (see [Built with](#built-with)).
+The name "Hostdeck" and the logo are not licensed for other uses. Third-party components keep their own licenses (see [Built with](#built-with)).

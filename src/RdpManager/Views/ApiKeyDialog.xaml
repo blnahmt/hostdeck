@@ -210,7 +210,7 @@
                                 <Hyperlink NavigateUri="https://bilenahmet.com" RequestNavigate="Link_Navigate">bilenahmet.com</Hyperlink>
                             </TextBlock>
                             <TextBlock x:Name="GitHubLine" Style="{StaticResource Text.Secondary}" Margin="16,0,0,0">
-                                <Hyperlink NavigateUri="https://github.com/blnahmt/hostline" RequestNavigate="Link_Navigate">GitHub</Hyperlink>
+                                <Hyperlink NavigateUri="https://github.com/blnahmt/hostdeck" RequestNavigate="Link_Navigate">GitHub</Hyperlink>
                             </TextBlock>
                         </StackPanel>
                         <TextBlock Text="© 2026 Ahmet Bilen" Style="{StaticResource Text.Muted}" Margin="0,8,0,0" />

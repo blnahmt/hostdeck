@@ -1,19 +1,19 @@
-﻿; Hostline RD - Inno Setup Script
+﻿; Hostdeck - Inno Setup Script
 ; Version placeholder {#AppVersion} is replaced by Release.ps1
-; Varsayilanlar Hostline RD. Release.ps1 her surum icin AppName/AppPublisher/AppGuid/UriScheme gecer.
+; Varsayilanlar Hostdeck. Release.ps1 her surum icin AppName/AppPublisher/AppGuid/UriScheme gecer.
 ; AppGuid ic surumde degismemeli: degisirse mevcut kurulumlar guncelleme yerine ikinci kopya kurar.
 
 #ifndef AppName
-  #define AppName "Hostline RD"
+  #define AppName "Hostdeck"
 #endif
 #ifndef AppPublisher
-  #define AppPublisher "Hostline"
+  #define AppPublisher "Ahmet Bilen"
 #endif
 #ifndef AppGuid
   #define AppGuid "A74335E6-F072-4270-B846-B481BB4A8C87"
 #endif
 #ifndef UriScheme
-  #define UriScheme "hostline"
+  #define UriScheme "hostdeck"
 #endif
 #define AppExeName AppName + ".exe"
 
@@ -32,8 +32,8 @@ SolidCompression=yes
 ; Windows acik/koyu ayarina uyar.
 WizardStyle=modern dynamic
 ShowLanguageDialog=auto
-#ifdef HostlineBrand
-; Hostline markasi (gorseller: tools\Make-InstallerImages.ps1). Release.ps1 yalniz Hostline RD icin verir;
+#ifdef HostdeckBrand
+; Hostdeck markasi (gorseller: tools\Make-InstallerImages.ps1). Release.ps1 yalniz Hostdeck icin verir;
 ; ic surum varsayilan gorunumde kalir.
 WizardImageFile=installer\wizard-light-100.png,installer\wizard-light-150.png,installer\wizard-light-200.png
 WizardImageFileDynamicDark=installer\wizard-dark-100.png,installer\wizard-dark-150.png,installer\wizard-dark-200.png
@@ -45,6 +45,9 @@ WizardBackColor=#FFFFFF
 WizardBackColorDynamicDark=#0A0A0A
 ; Buyuk marka gorseli karsilama sayfasinda gorunur (Inno 6 varsayilani bu sayfayi atlar).
 DisableWelcomePage=no
+; 1.3.0 "Hostline RD" adiyla kuruldu (ayni AppGuid). Klasor ve baslat menusu grubu yeni adi alsin.
+UsePreviousAppDir=no
+UsePreviousGroup=no
 #endif
 SetupIconFile={#IconFile}
 UninstallDisplayIcon={app}\{#AppExeName}
@@ -70,6 +73,14 @@ turkish.StartWithWindows=Windows ile birlikte başlat
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalOptions}"
 Name: "startup"; Description: "{cm:StartWithWindows}"; GroupDescription: "{cm:AdditionalOptions}"
 
+#ifdef HostdeckBrand
+[InstallDelete]
+; Eski ad (Hostline RD, 1.3.0 ve oncesi): eski klasor, kisayollar.
+Type: filesandordirs; Name: "{autopf}\Hostline RD"
+Type: filesandordirs; Name: "{autoprograms}\Hostline RD"
+Type: files; Name: "{autodesktop}\Hostline RD.lnk"
+#endif
+
 [Files]
 Source: "{#PublishDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
@@ -79,6 +90,11 @@ Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Tasks: desktopicon
 
 [Registry]
+#ifdef HostdeckBrand
+; Eski ad: Windows ile baslat kaydi ve hostline:// protokolu.
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: none; ValueName: "Hostline RD"; Flags: deletevalue
+Root: HKCU; Subkey: "Software\Classes\hostline"; ValueType: none; Flags: deletekey
+#endif
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "{#AppName}"; ValueData: """{app}\{#AppExeName}"""; Flags: uninsdeletevalue; Tasks: startup
 
 ; URI protokolu (kullanici bazli - admin gerekmez)
@@ -103,5 +119,9 @@ var
 begin
   // Kurulumdan once calisan uygulamayi kapat
   Exec('taskkill', '/F /IM "{#AppExeName}"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+#ifdef HostdeckBrand
+  // Eski adla calisan surum (guncelleme Hostline RD 1.3.0 icinden baslatildiysa)
+  Exec('taskkill', '/F /IM "Hostline RD.exe"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+#endif
   Result := True;
 end;

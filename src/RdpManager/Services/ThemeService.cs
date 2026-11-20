@@ -30,16 +30,16 @@ public sealed class ThemeService
     private const string AccentKey = "theme.accent";
     private const string PaletteKey = "theme.palette";
 
-    /// <summary>Secilebilir paletler. Hostline: beyaz/siyah + yumusak kirmizi. Klasik: gri + kirmizi.</summary>
-    public static readonly string[] Palettes = ["Hostline", "Klasik"];
+    /// <summary>Secilebilir paletler. Hostdeck: beyaz/siyah + yumusak kirmizi. Klasik: gri + kirmizi.</summary>
+    public static readonly string[] Palettes = ["Hostdeck", "Klasik"];
 
     /// <summary>Aktif paletin ana rengi (acik tema tonu). Ayarlardan degistirilebilir.</summary>
-    public string DefaultAccent => IsHostline ? "#E35D5B" : "#D64545";
+    public string DefaultAccent => IsHostdeck ? "#E35D5B" : "#D64545";
 
-    private bool IsHostline => Palette == "Hostline";
+    private bool IsHostdeck => Palette == "Hostdeck";
 
-    private Uri LightUri => new(IsHostline ? "Resources/Themes/HostlineLight.xaml" : "Resources/Themes/Light.xaml", UriKind.Relative);
-    private Uri DarkUri => new(IsHostline ? "Resources/Themes/HostlineDark.xaml" : "Resources/Themes/Dark.xaml", UriKind.Relative);
+    private Uri LightUri => new(IsHostdeck ? "Resources/Themes/HostdeckLight.xaml" : "Resources/Themes/Light.xaml", UriKind.Relative);
+    private Uri DarkUri => new(IsHostdeck ? "Resources/Themes/HostdeckDark.xaml" : "Resources/Themes/Dark.xaml", UriKind.Relative);
 
     private readonly Database _database;
     private ResourceDictionary? _current;
@@ -62,6 +62,7 @@ public sealed class ThemeService
     {
         AccentColor = LoadAccent();
         var palette = LoadSetting(PaletteKey);
+        if (palette == "Hostline") palette = "Hostdeck";   // eski ad (1.3.0 ve oncesi)
         Palette = Palettes.Contains(palette) ? palette! : AppEdition.DefaultPalette;
         Theme = Load();
         Apply(Theme, persist: false);

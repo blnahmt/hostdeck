@@ -10,14 +10,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RootNamespace>RdpManager</RootNamespace>
-    <AssemblyName>Hostline RD</AssemblyName>
+    <AssemblyName>Hostdeck</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>1.3.0</Version>
-    <AssemblyVersion>1.3.0.0</AssemblyVersion>
-    <FileVersion>1.3.0.0</FileVersion>
-    <Product>Hostline Remote Desktop</Product>
-    <Company>Hostline</Company>
-    <Description>Hostline Remote Desktop - RDP, VNC ve SSH baglanti yoneticisi</Description>
+    <Version>1.4.0</Version>
+    <AssemblyVersion>1.4.0.0</AssemblyVersion>
+    <FileVersion>1.4.0.0</FileVersion>
+    <Product>Hostdeck</Product>
+    <Company>Ahmet Bilen</Company>
+    <Description>Hostdeck - RDP, VNC ve SSH baglanti yoneticisi</Description>
     <ApplicationIcon>Resources\app.ico</ApplicationIcon>
     <!-- mstscax.dll COM interop'u x64. AnyCPU ile calisirsa 32-bit hostta patlar. -->
     <Platforms>x64</Platforms>
@@ -40,7 +40,7 @@
 
   <!--
     Iki surum ayni koddan derlenir (-p:Edition=Public|Internal).
-    Public (Hostline RD) varsayilan ve depodaki tek surumdur. Internal surumun ad, ikon ve
+    Public (Hostdeck) varsayilan ve depodaki tek surumdur. Internal surumun ad, ikon ve
     adresleri git'e girmeyen Internal/ klasorunde durur; klasor varsa varsayilan Internal olur.
   -->
   <PropertyGroup>

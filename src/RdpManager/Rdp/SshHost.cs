@@ -28,7 +28,7 @@ namespace RdpManager.Rdp;
 /// </summary>
 public sealed class SshHost : UserControl, ISessionHost
 {
-    private const string VirtualHost = "terminal.hostline";
+    private const string VirtualHost = "terminal.hostdeck";
     private const int ReplayLimit = 256 * 1024;
 
     private static Task<CoreWebView2Environment>? _environment;

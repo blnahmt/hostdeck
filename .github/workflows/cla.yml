@@ -28,10 +28,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           path-to-signatures: 'signatures/cla.json'
-          path-to-document: 'https://github.com/blnahmt/hostline/blob/main/CLA.md'
+          path-to-document: 'https://github.com/blnahmt/hostdeck/blob/main/CLA.md'
           branch: 'cla-signatures'
           allowlist: 'blnahmt,dependabot[bot]'
           create-file-commit-message: 'Create CLA signatures file'
           signed-commit-message: '$contributorName signed the CLA in $owner/$repo#$pullRequestNo'
-          custom-notsigned-prcomment: 'Thank you for your contribution! Before it can be merged, please read the [Contributor License Agreement](https://github.com/blnahmt/hostline/blob/main/CLA.md) and sign it by posting the comment below. You only need to do this once.'
+          custom-notsigned-prcomment: 'Thank you for your contribution! Before it can be merged, please read the [Contributor License Agreement](https://github.com/blnahmt/hostdeck/blob/main/CLA.md) and sign it by posting the comment below. You only need to do this once.'
           custom-allsigned-prcomment: 'All contributors have signed the CLA. Thank you!'

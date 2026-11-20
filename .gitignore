@@ -12,5 +12,5 @@ release/
 src/RdpManager/Internal/
 tools/internal.ps1
 
-# Tanitim sitesi (bilenahmet.com/hostline) depoya girmez; zip olarak ayrica yuklenir.
+# Tanitim sitesi (bilenahmet.com/hostdeck) depoya girmez; zip olarak ayrica yuklenir.
 website/

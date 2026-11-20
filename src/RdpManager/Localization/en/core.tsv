@@ -65,3 +65,4 @@ Parola kayitli degil. Baglanti editorunden parolayi kaydedin veya SSH anahtari k
 SSH sunucu anahtari	SSH server key
 UYARI: '{0}' sunucusunun anahtari DEGISTI.\n\nKayitli: {1}\nSimdiki: {2} {3}\n\nSunucu yeniden kurulduysa bu normaldir; degilse araya biri girmis olabilir. Yeni anahtara guvenip baglanilsin mi?	WARNING: the key of server '{0}' has CHANGED.\n\nSaved: {1}\nCurrent: {2} {3}\n\nThis is expected if the server was reinstalled; otherwise someone may be intercepting the connection. Trust the new key and connect?
 SSH sunucu anahtari degisti	SSH server key changed
+{0} klasoru tasinamadi. Uygulamanin eski surumunu kapatip tekrar deneyin.	Could not move the {0} folder. Close the old version of the app and try again.

@@ -1,6 +1,6 @@
-# Hostline RD Contributor License Agreement
+# Hostdeck Contributor License Agreement
 
-Thank you for contributing to Hostline RD ("the Project"), maintained by
+Thank you for contributing to Hostdeck ("the Project"), maintained by
 Ahmet Bilen (https://github.com/blnahmt, "the Maintainer"). This agreement makes clear the rights you give
 for your contributions, so the Project can keep a single official release
 and, if ever needed, change its license.
