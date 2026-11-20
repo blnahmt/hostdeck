@@ -1,115 +1,129 @@
-# RdpManager
+<p align="center">
+  <img src="website/img/logo.png" width="96" alt="Hostline RD logo">
+</p>
 
-Hostline RD: sekmeli RDP, VNC ve SSH bağlantı yöneticisi. Sadece Windows.
+<h1 align="center">Hostline RD</h1>
 
+<p align="center">
+  <b>RDP, VNC and SSH in one tabbed window.</b><br>
+  A fast, native remote connection manager for Windows.
+</p>
 
-## Durum
+<p align="center">
+  <a href="https://github.com/blnahmt/hostline/releases/latest"><b>Download for Windows</b></a> ·
+  <a href="https://bilenahmet.com/hostline/">Website</a> ·
+  <a href="https://github.com/blnahmt/hostline/issues">Report an issue</a>
+</p>
 
-**Faz 1 — tamamlandı**
-- [x] Solution + proje iskeleti, DI, Serilog
-- [x] `RdpHost` — ActiveX'i `WindowsFormsHost` içinde barındırma
-- [x] 4 tuzağın çözümü: `WM_GETOBJECT`, `WM_MOUSEACTIVATE`, geciktirilmiş dispose, resize bloğu
-- [x] Bağlantı durum makinesi + hata kodu çevirisi
-- [x] Gerçek sunucuya bağlantı doğrulandı
+<p align="center">
+  <img src="website/img/shot-ssh.png" alt="An SSH session open in a Hostline RD tab, showing a coloured shell prompt and command output">
+</p>
 
-**Faz 2 — tamamlandı**
-- [x] SQLite + Dapper deposu (JSON blob şeması)
-- [x] DPAPI parola koruması
-- [x] Bağlantı listesi: grup başlıkları, arama, çift tıkla bağlan
-- [x] Bağlantı editörü (tüm RDP ayar yüzeyi)
-- [x] `.rdp` dosyası içe aktarma
-- [x] 18 birim testi geçiyor
+## Why Hostline RD
 
-**Faz 3 — kod tamam, test bekliyor**
-- [x] Dragablz sekmeleri, sekmeyi ayrı pencereye koparma
-- [x] `SessionManager` — oturum/pencere/tam ekran kayıtları, "aynı sunucuyu iki kez açma"
-- [x] Tam ekran: host re-parent ediliyor, oturum kopmuyor
-- [x] Karışık DPI tespiti → `mstsc.exe` fallback (DPAPI ile şifreli parola dahil)
-- [x] Sekme başlığında durum göstergesi, sağ tık menüsü, Ctrl+Alt+Del
+- **Native, not a browser in disguise.** Built with .NET 10 and WPF. RDP sessions use Microsoft's own Remote Desktop ActiveX control (the same engine as `mstsc`), so display quality, DPI scaling and clipboard behave like the built-in client.
+- **Everything in tabs.** RDP, VNC and SSH sessions live side by side. Drag a tab out into its own window, go full screen, or span all monitors.
+- **Your data stays on your machine.** No account, no cloud, no telemetry. Saved passwords are encrypted with Windows DPAPI for your Windows user.
 
-**Cila turu — tamamlandı**
-- [x] Kendi başlık çubuğu (`ChromeWindow` + `WindowChrome`), Windows chrome'u yok
-- [x] Quicksand fontu gömülü, açık/koyu tema, ince kırmızı vurgu, gölge yok
-- [x] Sunucu listesi ve oturumlar ayrı pencerelerde
-- [x] Etiketler (çoklu), renk şeridi, kamera + pano yönlendirmesi
-- [x] Sıralama modu + sürükleyerek elle sıralama
-- [x] Etiket çipleriyle filtreleme (birden fazla seçilirse "herhangi biri")
-- [x] Listede açık oturum göstergesi, bağlantıyı çoğaltma
-- [x] Arka planda kopan oturum: sekme vurgusu + görev çubuğu yanıp sönmesi
-- [x] Ağ kopmalarında otomatik yeniden bağlanma (5/10/20/30/30 sn, geri sayımlı)
-- [x] Pencere yerleşimi hatırlanıyor; oturum penceresi ilk açılışta maximize
-- [x] JSON dışa aktarma, .rdp + .json içe aktarma
+## Features
 
-**UX turu — tamamlandı**
-- [x] Global kısayol + hızlı başlatıcı (Alt+M → Ctrl+Alt+M → Ctrl+Shift+M sırayla denenir)
-- [x] Bağlantı listesinde sağ tık menüsü, ikonlu araç çubuğu, tutarlı ikon seti
-- [x] Liste yoğunluğu (kompakt/rahat), tercih kaydediliyor
-- [x] Dinamik sekme genişliği, kapat butonu yalnız aktif/hover sekmede
-- [x] Bağlanırken belirsiz ilerleme çizgisi
-- [x] "+" listesi son kullanıma göre sıralı
+**Sessions**
+- RDP with automatic reconnect on network drops, RD Gateway, drive / printer / clipboard / camera redirection, multi-monitor full screen
+- VNC with password authentication and two-way clipboard
+- SSH terminal in a tab (xterm compatible: colours, `vim`, `htop`, copy and paste), signing in with a password or a private key, and host key verification on first use
 
-**Faz 4 — sıradaki:** Velopack ile otomatik güncelleme, tepsi ikonu, tek örnek
+**Organize**
+- Tags, favorites, colour strips and instant search
+- Reachability indicator for every server
+- Connection history with durations
+- Quick connect launcher on a global hotkey, and a command palette (`Ctrl+K`)
 
-## Sürümler
+**Move and protect your list**
+- Import `.rdp` and `.json` files
+- Export with optional encryption (AES-256-GCM with your passphrase; passwords are only included when encrypted)
 
-Depodaki tek sürüm **Hostline RD** (`dotnet build` varsayılanı). Kod `-p:Edition=Internal` ile
-şirket içi bir sürüm de üretebiliyor; o sürümün adı, ikonu ve adresleri depoya girmeyen
-`src/RdpManager/Internal/` ve `tools/internal.ps1` dosyalarında durur.
+**Make it yours**
+- Light and dark themes, colour palettes, square and minimal UI
+- English and Turkish interface
+- Automatic updates from GitHub Releases
 
-## Ön koşullar
+<p align="center">
+  <img src="website/img/shot-main.png" width="360" alt="The connection list with tags, colour strips and reachability dots">
+  &nbsp;
+  <img src="website/img/shot-editor.png" width="380" alt="The connection editor with RDP, VNC and SSH tabs">
+</p>
 
-- **.NET 10 SDK** (10.0.302 ile doğrulandı)
-- **AxImp.exe** — Visual Studio Installer → Değiştir → Tekil bileşenler → **.NET Framework 4.8 SDK**
+## Install
 
-## Kurulum
+1. Download `HostlineRD_<version>_x64-setup.exe` from the [latest release](https://github.com/blnahmt/hostline/releases/latest).
+2. Run it. No administrator rights are needed; it installs for the current user.
 
-```bash
-pwsh tools/Generate-Interop.ps1
-```
+**Requirements**
+- Windows 10 or 11, x64
+- Nothing else to install: the .NET runtime is included in the installer
+- Microsoft Edge WebView2 Runtime (built into Windows 11; only needed for SSH tabs)
 
-`lib/AxMSTSCLib.dll` ve `lib/MSTSCLib.dll` üretilir. Bunlar repoya commit edilir — RDP ActiveX kontrolü için resmî NuGet paketi yoktur, 1Remote ve mRemoteNG de aynısını yapar.
+The installer is not code-signed yet, so SmartScreen may ask you to confirm.
 
-```bash
+## Privacy
+
+Connections, settings and history are stored in `%AppData%\HostlineRD`. The app only talks to the servers you connect to, checks whether they are reachable, and downloads `latest.json` from GitHub to look for updates (you can turn this off in Settings).
+
+## Build from source
+
+Prerequisites: [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) and Windows.
+
+```powershell
+git clone https://github.com/blnahmt/hostline.git
+cd hostline
 dotnet build RdpManager.sln -c Debug
+dotnet run --project src/RdpManager
 ```
 
-```bash
-dotnet run --project src/RdpManager -c Debug
+The RDP interop assemblies are committed under `lib/`. To regenerate them you need `AxImp.exe` from the .NET Framework 4.8 SDK: `pwsh tools/Generate-Interop.ps1`.
+
+Release builds and the installer are produced by `tools/Release.ps1` (needs [Inno Setup 6](https://jrsoftware.org/isinfo.php)). Developer notes (in Turkish) are in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
+
+## Project structure
+
+```text
+hostline/
+├── src/
+│   ├── RdpManager/            the app (WPF, .NET 10)
+│   │   ├── App.xaml.cs        startup, single instance, language, logging
+│   │   ├── Rdp/               session hosts: RDP (ActiveX), VNC, SSH + host key store
+│   │   ├── Services/          sessions, themes, tray, updates, reachability, hotkey
+│   │   ├── Data/              SQLite storage, .rdp import, JSON import/export
+│   │   ├── Security/          DPAPI for saved passwords, AES-GCM for exports
+│   │   ├── Localization/      Loc + English dictionaries (Localization/en/*.tsv)
+│   │   ├── Terminal/          xterm.js page used by SSH tabs
+│   │   ├── Views/, ViewModels/, Models/
+│   │   └── Resources/, Themes/  styles, icons, fonts, emoji
+│   └── RdpManager.Tests/      xUnit tests
+├── lib/                       RDP interop assemblies (generated from mstscax.dll)
+├── tools/                     Release.ps1, installer.iss, Generate-Interop.ps1
+├── website/                   the bilenahmet.com/hostline site
+└── docs/DEVELOPMENT.md        architecture notes and known pitfalls (Turkish)
 ```
 
-## Yapı
+## Contributing
 
-```
-src/RdpManager/
-  App.xaml(.cs)          DI, Serilog, global hata yakalama
-  Models/                RdpConnection — tüm ayarlar, Faz 2'de JSON blob olarak saklanacak
-  Rdp/
-    RdpClientEx.cs       WndProc düzeltmeleri (kritik)
-    RdpHost.xaml(.cs)    oturumun kendisi — asla yeniden yaratılmaz, re-parent edilir
-    RdpDisconnectInfo.cs hata kodu → Türkçe mesaj
-  Services/
-    HostDisposeQueue.cs  geciktirilmiş dispose (çökme önleyici)
-  ViewModels/ Views/
-lib/                     üretilen interop DLL'leri
-tools/Generate-Interop.ps1
-```
+Bug reports, ideas and pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first; pull requests need a one-time [CLA](CLA.md) signature.
 
-## Bilinmesi gerekenler
+## Built with
 
-- **`WM_MOUSEACTIVATE`'e dokunma.** `AxHost` bu mesajda OLE kontrolünü UI-active yapıyor; ele geçirilirse tıklamalar çalışır ama **sürükleme çalışmaz** (metin seçme, pencere taşıma). `base.WndProc`'a geçirmek bile yetmedi — mesajı hiç ele almamak gerekti.
-- **Windows tuşu:** `KeyboardHookMode` varsayılanı 2'dir (yalnız tam ekranda uzak oturuma gider). Pencere modunda da gitmesi için 1 olmalı.
-- **Airspace: WPF öğeleri `WindowsFormsHost`'un üstüne çizilemez.** RDP kontrolü bir HWND'dir; aynı pencerede onun üzerine konan her WPF öğesi görünmez olur. Bu yüzden (a) tam ekran araç çubuğu ayrı bir pencere (`FullScreenBar`), (b) `RdpHost`'un durum katmanı gösterilirken `WindowsFormsHost` gizleniyor.
-- **`ChromeWindow` stili `Themes/Generic.xaml`'de olmak zorunda.** App.xaml'deki implicit style yalnızca tam tipe uygulanır, türetilmiş pencerelere miras kalmaz.
-- **Sekme stili `ItemContainerStyle`'a açıkça atanmalı.** Dragablz kendi varsayılanını set ettiği için anahtarsız implicit style ezilir.
-- **Tema sözlüğü sırası önemli.** WPF'te aynı anahtar için sonraki sözlük kazanır; `ThemeService` sözlüğü ekleme değil **değiştirme** yapar.
+| Component | Purpose | License |
+|---|---|---|
+| Microsoft Remote Desktop ActiveX (`mstscax.dll`) | RDP sessions | Part of Windows |
+| [SSH.NET](https://github.com/sshnet/SSH.NET) | SSH connections | MIT |
+| [xterm.js](https://github.com/xtermjs/xterm.js) + Microsoft Edge WebView2 | Terminal | MIT / Microsoft |
+| [MarcusW.VncClient](https://github.com/karbonbaron/MarcusW.VncClient) | VNC sessions | MIT |
+| [Dragablz](https://github.com/ButchersBoy/Dragablz) | Tear-off tabs | MIT |
+| [Quicksand](https://fonts.google.com/specimen/Quicksand) | UI font | SIL OFL 1.1 |
+| [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) | Connection icons | MIT |
 
+## License
 
-- **`RdpHost` asla yeniden yaratılmaz.** Tam ekran / sekme koparma işlemlerinde sadece re-parent edilir; yeniden yaratılırsa oturum kopar.
-- **Dispose geciktirilmelidir.** `OnDisconnected` içindeyken ActiveX'i dispose etmek uygulamayı çökertir — `HostDisposeQueue` bunun içindir.
-- **DPI ayarları `Connect()` öncesinde set edilmelidir**, sonrasında etkisizdir.
-- **x64 zorunlu.** `mstscax.dll` interop'u AnyCPU ile 32-bit hostta patlar.
-- Parola Faz 1'de sadece bellekte tutuluyor; diske yazılmıyor. DPAPI koruması Faz 2'de.
+Hostline RD is **source-available** under the [PolyForm Strict License 1.0.0](LICENSE): free for noncommercial use, with one additional permission to modify the code to prepare contributions to this repository. Redistribution and modified versions are not allowed, so there is one official release. Contributions are accepted under the [CLA](CLA.md).
 
-## Sonraki adım
-
-Faz 2 — SQLite + Dapper deposu, DPAPI parola koruması, bağlantı listesi ve editör ekranı.
+The names "Hostline" and "Hostline RD" and the logo are not licensed for other uses. Third-party components keep their own licenses (see [Built with](#built-with)).

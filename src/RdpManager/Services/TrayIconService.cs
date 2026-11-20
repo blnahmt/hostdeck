@@ -42,7 +42,7 @@ public sealed class TrayIconService : IDisposable
             Visible = true,
         };
 
-        _menu = new WinForms.ContextMenuStrip();
+        _menu = new WinForms.ContextMenuStrip { ShowImageMargin = false, Padding = new WinForms.Padding(0, 4, 0, 4) };
         _menu.Opening += (_, _) => RebuildMenu();
         _icon.ContextMenuStrip = _menu;
 
@@ -63,6 +63,7 @@ public sealed class TrayIconService : IDisposable
     /// <summary>Menuyu yeniden kurar: Goster / favoriler / son kullanilanlar / Cikis.</summary>
     private void RebuildMenu()
     {
+        ApplyTheme(); // tema menu kapaliyken degismis olabilir
         _menu.Items.Clear();
         _menu.Items.Add(Loc.T("Goster"), null, (_, _) => ShowRequested?.Invoke(this, EventArgs.Empty));
 
@@ -95,6 +96,26 @@ public sealed class TrayIconService : IDisposable
 
         _menu.Items.Add(new WinForms.ToolStripSeparator());
         _menu.Items.Add(Loc.T("Cikis"), null, (_, _) => ExitRequested?.Invoke(this, EventArgs.Empty));
+    }
+
+    /// <summary>Menu renklerini uygulamanin o anki temasindan (palet, acik/koyu, ana renk) alir.</summary>
+    private void ApplyTheme()
+    {
+        static Drawing.Color Color(string key, Drawing.Color fallback)
+            => Application.Current?.TryFindResource(key) is System.Windows.Media.SolidColorBrush { Color: var c }
+                ? Drawing.Color.FromArgb(c.A, c.R, c.G, c.B)
+                : fallback;
+
+        var palette = new TrayMenuPalette(
+            Color("Brush.SurfaceRaised", Drawing.Color.White),
+            Color("Brush.Text", Drawing.Color.Black),
+            Color("Brush.TextMuted", Drawing.Color.Gray),
+            Color("Brush.SelectedStrong", Drawing.Color.Gainsboro), // Brush.Hover koyu temada zeminden ayirt edilmiyor
+            Color("Brush.Border", Drawing.Color.Silver));
+
+        _menu.Renderer = new TrayMenuRenderer(palette);
+        _menu.BackColor = palette.Background;
+        _menu.ForeColor = palette.Text;
     }
 
     private static WinForms.ToolStripMenuItem Header(string text)

@@ -8,15 +8,16 @@
 #   ...Release.ps1 -CertThumbprint <sertifika_parmakizi>
 #   ...Release.ps1 -PfxPath C:\yol\cert.pfx -PfxPassword <parola>
 #
-# Sertifika edinme: bir CA'dan ( or. DigiCert, Sectigo) OV/EV Authenticode
-# sertifikasi alin. EV sertifika Smart App Control itibarini en hizli kazandirir.
+# Sertifika: bir CA'dan (or. Certum, Sectigo, DigiCert) Authenticode kod imzalama sertifikasi.
+# Bulut/akilli kart sertifikalari Windows sertifika deposunda gorunur: -CertThumbprint ile kullanin.
+# SmartScreen itibari imzali indirmeler arttikca olusur; ilk surumlerde uyari bir sure surebilir.
 
 param(
     [string]$CertThumbprint,
     [string]$PfxPath,
     [string]$PfxPassword,
     [string]$TimestampUrl = 'http://timestamp.digicert.com',
-    # Dis surum (Hostline RD) guncelleme klasoru, or. https://ornek.com/hostline/updates. Bossa latest.json uretilmez.
+    # Dis surum (Hostline RD) indirme klasoru. Bossa GitHub release'i: .../releases/download/v<surum>
     [string]$PublicUpdateBase = '',
     # Yalniz bir surum: Internal veya Public. Bossa ikisi de.
     [ValidateSet('', 'Internal', 'Public')][string]$Only = ''
@@ -95,11 +96,13 @@ $editions += @(
     [ordered]@{
         Edition   = 'Public'
         Name      = 'Hostline RD'
+        SetupBase = 'HostlineRD'   # GitHub dosya adindaki boslugu noktaya ceviriyor; bosluksuz ad
         Publisher = 'Hostline'
         AppGuid   = 'A74335E6-F072-4270-B846-B481BB4A8C87'
         Scheme    = 'hostline'
         OutDir    = (Join-Path $releaseDir 'public')
-        BaseUrl   = $PublicUpdateBase
+        BaseUrl   = $(if ($PublicUpdateBase) { $PublicUpdateBase } else { "https://github.com/blnahmt/hostline/releases/download/v$version" })
+        GitHub    = $true
         Icon      = $iconFile
     }
 )
@@ -122,10 +125,11 @@ foreach ($e in $editions) {
     Remove-Item $publishDir -Recurse -Force -ErrorAction SilentlyContinue
 
     Write-Host 'Release build aliniyor...' -ForegroundColor Yellow
+    # self-contained: .NET calisma ortami kurulumla gelir; kullanici bir sey kurmaz, yonetici izni gerekmez.
     dotnet publish $csproj `
         -c Release `
         -r win-x64 `
-        --self-contained false `
+        --self-contained true `
         -p:Edition=$($e.Edition) `
         -o $publishDir
 
@@ -151,7 +155,8 @@ foreach ($e in $editions) {
     # --- 3. Inno Setup ile installer olustur ---
     Write-Host 'Installer olusturuluyor...' -ForegroundColor Yellow
 
-    $setupName = "$($e.Name)_${version}_x64-setup"
+    $setupBase = if ($e.Contains('SetupBase')) { $e.SetupBase } else { $e.Name }
+    $setupName = "${setupBase}_${version}_x64-setup"
 
     & $iscc $issFile `
         "/DAppVersion=$version" `
@@ -199,7 +204,7 @@ foreach ($e in $editions) {
         Write-Host 'Guncelleme sunucusu tanimli degil, latest.json uretilmedi.' -ForegroundColor DarkYellow
     }
 
-    $summary += [pscustomobject]@{ Edition = $e.Edition; Setup = $setupExe; Latest = $latestPath; BaseUrl = $e.BaseUrl; Name = "$setupName.exe" }
+    $summary += [pscustomobject]@{ Edition = $e.Edition; Setup = $setupExe; Latest = $latestPath; BaseUrl = $e.BaseUrl; Name = "$setupName.exe"; GitHub = $e.Contains('GitHub') }
 
     # --- 5. Temizlik ---
     Remove-Item $publishDir -Recurse -Force -ErrorAction SilentlyContinue
@@ -213,6 +218,12 @@ foreach ($s in $summary) {
     Write-Host ''
     Write-Host "  [$($s.Edition)] $($s.Setup)"
     if ($s.Latest) {
-        Write-Host "    Sunucuya yukle: $($s.Name) ve latest.json  ->  $($s.BaseUrl)/" -ForegroundColor Yellow
+        if ($s.GitHub) {
+            # Yayinlamak disa donuk bir adim: komut yalniz yazdirilir, calistirilmaz.
+            Write-Host "    GitHub'da yayinlamak icin:" -ForegroundColor Yellow
+            Write-Host "    gh release create v$version `"$($s.Setup)`" `"$($s.Latest)`" --repo blnahmt/hostline --title `"Hostline RD $version`" --generate-notes"
+        } else {
+            Write-Host "    Sunucuya yukle: $($s.Name) ve latest.json  ->  $($s.BaseUrl)/" -ForegroundColor Yellow
+        }
     }
 }

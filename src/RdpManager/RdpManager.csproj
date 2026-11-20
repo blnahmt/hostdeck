@@ -34,6 +34,8 @@
       bazi makinelerde acilmiyordu, bu yuzden bilerek 2.1.11'de kaliyoruz.
     -->
     <NoWarn>$(NoWarn);WFO0003;NU1903</NoWarn>
+    <!-- Arayuz yalniz EN/TR: .NET ve paketlerin diger dil kaynak dosyalari yayina girmesin (self-contained boyutu). -->
+    <SatelliteResourceLanguages>en;tr</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <!--
@@ -92,7 +94,7 @@
     <Resource Include="Resources\app.ico" />
     <Resource Include="Resources\Fonts\*.ttf" />
     <None Include="Resources\Fonts\OFL.txt" CopyToOutputDirectory="PreserveNewest" />
-    <!-- Twemoji renkli emoji gorselleri (CC-BY 4.0) ve gomulu emoji listesi -->
+    <!-- Microsoft Fluent Emoji gorselleri (MIT) ve gomulu emoji listesi -->
     <None Remove="Resources\Emoji\**" />
     <Resource Include="Resources\Emoji\*.png" />
     <Resource Include="Resources\Emoji\emoji-list.txt" />

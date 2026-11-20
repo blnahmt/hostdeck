@@ -10,8 +10,8 @@ public static class AppEdition
     public const string Name = "Hostline RD";
     public const string Id = "HostlineRD";            // mutex + AppData klasoru
     public const string UriScheme = "hostline";
-    // shortcut: dis surumun guncelleme sunucusu henuz yok, bos oldukca otomatik guncelleme kapali.
-    public const string UpdateUrl = "";
+    // GitHub her zaman en son (on surum olmayan) release'in dosyasina yonlendirir. Depo herkese acik olmali.
+    public const string UpdateUrl = "https://github.com/blnahmt/hostline/releases/latest/download/latest.json";
     public static bool HasServerStatus => false;      // sirket ici doluluk API'si yalniz ic surumde
     public const string DefaultPalette = "Hostline";
     public const bool FollowsSystemLanguage = true;    // ilk acilista Windows dili (TR degilse EN)
